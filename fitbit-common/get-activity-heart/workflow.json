@@ -1,0 +1,143 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "BLOB_コンテンツを取得する_(V2)": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {}
+      },
+      "HTTP": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://api.fitbit.com/1/user/BDJQ64/activities/heart/date/@{formatDateTime(addDays(addHours(convertFromUtc(utcNow(),'Tokyo Standard Time'), +0),-1), 'yyyy-MM-dd')}/1d/1sec.json",
+          "method": "GET",
+          "headers": {
+            "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
+          }
+        },
+        "runAfter": {
+          "BLOB_コンテンツを取得する_(V2)": [
+            "SUCCEEDED"
+          ]
+        },
+        "runtimeConfiguration": {
+          "contentTransfer": {
+            "transferMode": "Chunked"
+          }
+        }
+      },
+      "JSON_の解析": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@body('HTTP')",
+          "schema": {
+            "properties": {
+              "activities-heart": {
+                "items": {
+                  "properties": {
+                    "dateTime": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "activities-heart-intraday": {
+                "properties": {
+                  "dataset": {
+                    "items": {
+                      "properties": {
+                        "time": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "datasetInterval": {
+                    "type": "integer"
+                  },
+                  "datasetType": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "runAfter": {
+          "HTTP": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "For_each": {
+        "type": "Foreach",
+        "foreach": "@body('JSON_の解析')?['activities-heart']",
+        "actions": {
+          "For_each_1": {
+            "type": "Foreach",
+            "foreach": "@body('JSON_の解析')?['activities-heart-intraday']?['dataset']",
+            "actions": {
+              "行を挿入する_(V2)": {
+                "type": "ApiConnection",
+                "inputs": {
+                  "host": {
+                    "connection": {
+                      "referenceName": "sql"
+                    }
+                  },
+                  "method": "post",
+                  "body": {
+                    "client_id": "BDJQ64",
+                    "date": "@items('For_each')?['dateTime']",
+                    "time": "@items('For_each_1')?['time']",
+                    "value": "@items('For_each_1')?['value']"
+                  },
+                  "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/tables/@{encodeURIComponent(encodeURIComponent('[dbo].[activities_heart]'))}/items"
+                }
+              }
+            }
+          }
+        },
+        "runAfter": {
+          "JSON_の解析": [
+            "SUCCEEDED"
+          ]
+        }
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "Recurrence": {
+        "type": "Recurrence",
+        "recurrence": {
+          "interval": 1440,
+          "frequency": "Minute",
+          "startTime": "2025-04-29T16:00:05Z"
+        }
+      }
+    }
+  },
+  "kind": "Stateful"
+}

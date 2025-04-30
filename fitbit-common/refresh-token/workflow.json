@@ -1,0 +1,154 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "BLOB_コンテンツを取得する_(V2)_-_access_token": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {}
+      },
+      "BLOB_コンテンツを取得する_(V2)_-_refresh_token": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/refresh_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {
+          "BLOB_コンテンツを取得する_(V2)_-_access_token": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "HTTP": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://get-fitbit-token.azurewebsites.net/api/get_new_token",
+          "method": "GET",
+          "queries": {
+            "access_token": "Bearer @{body('BLOB_コンテンツを取得する_(V2)_-_access_token')}",
+            "code": "${AZURE_FUNCTION_KEY}",
+            "refresh_token": "@{body('BLOB_コンテンツを取得する_(V2)_-_refresh_token')}"
+          }
+        },
+        "runAfter": {
+          "BLOB_コンテンツを取得する_(V2)_-_refresh_token": [
+            "SUCCEEDED"
+          ]
+        },
+        "runtimeConfiguration": {
+          "contentTransfer": {
+            "transferMode": "Chunked"
+          }
+        }
+      },
+      "JSON_の解析": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@body('HTTP')",
+          "schema": {
+            "properties": {
+              "access_token": {
+                "type": "string"
+              },
+              "expires_in": {
+                "type": "integer"
+              },
+              "refresh_token": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              },
+              "token_type": {
+                "type": "string"
+              },
+              "user_id": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "runAfter": {
+          "HTTP": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "BLOB_を更新する_(V2)_-_access_token": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "put",
+          "body": "@body('JSON_の解析')?['access_token']",
+          "headers": {
+            "ReadFileMetadataFromServer": true
+          },
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}"
+        },
+        "runAfter": {
+          "JSON_の解析": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "BLOB_を更新する_(V2)_-_refresh_token": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "put",
+          "body": "@body('JSON_の解析')?['refresh_token']",
+          "headers": {
+            "ReadFileMetadataFromServer": true
+          },
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/refresh_token.txt'))}"
+        },
+        "runAfter": {
+          "BLOB_を更新する_(V2)_-_access_token": [
+            "SUCCEEDED"
+          ]
+        }
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "繰り返し": {
+        "type": "Recurrence",
+        "recurrence": {
+          "interval": 360,
+          "frequency": "Minute",
+          "startTime": "2025-04-30T23:00:00Z"
+        }
+      }
+    }
+  },
+  "kind": "Stateful"
+}

@@ -1,0 +1,333 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "BLOB_コンテンツを取得する_(V2)": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {}
+      },
+      "HTTP": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://api.fitbit.com/1.2/user/BDJQ64/sleep/date/@{triggerBody()?['date']}.json",
+          "method": "GET",
+          "headers": {
+            "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
+          }
+        },
+        "runAfter": {
+          "BLOB_コンテンツを取得する_(V2)": [
+            "SUCCEEDED"
+          ]
+        },
+        "runtimeConfiguration": {
+          "contentTransfer": {
+            "transferMode": "Chunked"
+          }
+        }
+      },
+      "JSON_の解析": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@body('HTTP')",
+          "schema": {
+            "properties": {
+              "sleep": {
+                "items": {
+                  "properties": {
+                    "dateOfSleep": {
+                      "type": "string"
+                    },
+                    "duration": {
+                      "type": "integer"
+                    },
+                    "efficiency": {
+                      "type": "integer"
+                    },
+                    "endTime": {
+                      "type": "string"
+                    },
+                    "infoCode": {
+                      "type": "integer"
+                    },
+                    "isMainSleep": {
+                      "type": "boolean"
+                    },
+                    "levels": {
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "properties": {
+                              "dateTime": {
+                                "type": "string"
+                              },
+                              "level": {
+                                "type": "string"
+                              },
+                              "seconds": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "dateTime",
+                              "level",
+                              "seconds"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "shortData": {
+                          "items": {
+                            "properties": {
+                              "dateTime": {
+                                "type": "string"
+                              },
+                              "level": {
+                                "type": "string"
+                              },
+                              "seconds": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "dateTime",
+                              "level",
+                              "seconds"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "summary": {
+                          "properties": {
+                            "deep": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "minutes": {
+                                  "type": "integer"
+                                },
+                                "thirtyDayAvgMinutes": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "light": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "minutes": {
+                                  "type": "integer"
+                                },
+                                "thirtyDayAvgMinutes": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "rem": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "minutes": {
+                                  "type": "integer"
+                                },
+                                "thirtyDayAvgMinutes": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "wake": {
+                              "properties": {
+                                "count": {
+                                  "type": "integer"
+                                },
+                                "minutes": {
+                                  "type": "integer"
+                                },
+                                "thirtyDayAvgMinutes": {
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "logId": {
+                      "type": "integer"
+                    },
+                    "logType": {
+                      "type": "string"
+                    },
+                    "minutesAfterWakeup": {
+                      "type": "integer"
+                    },
+                    "minutesAsleep": {
+                      "type": "integer"
+                    },
+                    "minutesAwake": {
+                      "type": "integer"
+                    },
+                    "minutesToFallAsleep": {
+                      "type": "integer"
+                    },
+                    "startTime": {
+                      "type": "string"
+                    },
+                    "timeInBed": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "dateOfSleep",
+                    "duration",
+                    "efficiency",
+                    "endTime",
+                    "infoCode",
+                    "isMainSleep",
+                    "levels",
+                    "logId",
+                    "logType",
+                    "minutesAfterWakeup",
+                    "minutesAsleep",
+                    "minutesAwake",
+                    "minutesToFallAsleep",
+                    "startTime",
+                    "timeInBed",
+                    "type"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "summary": {
+                "properties": {
+                  "stages": {
+                    "properties": {
+                      "deep": {
+                        "type": "integer"
+                      },
+                      "light": {
+                        "type": "integer"
+                      },
+                      "rem": {
+                        "type": "integer"
+                      },
+                      "wake": {
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "totalMinutesAsleep": {
+                    "type": "integer"
+                  },
+                  "totalSleepRecords": {
+                    "type": "integer"
+                  },
+                  "totalTimeInBed": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "runAfter": {
+          "HTTP": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "For_each": {
+        "type": "Foreach",
+        "foreach": "@body('JSON_の解析')?['sleep']",
+        "actions": {
+          "行を挿入する_(V2)": {
+            "type": "ApiConnection",
+            "inputs": {
+              "host": {
+                "connection": {
+                  "referenceName": "sql"
+                }
+              },
+              "method": "post",
+              "body": {
+                "client_id": "2398GC",
+                "date_of_sleep": "@items('For_each')?['dateOfSleep']",
+                "sleep_start_time": "@items('For_each')?['startTime']",
+                "sleep_end_time": "@items('For_each')?['endTime']",
+                "minutes_to_fall_asleep": "@{items('For_each')?['minutesToFallAsleep']}",
+                "total_minutes_asleep": "@body('JSON_の解析')?['summary']?['totalMinutesAsleep']",
+                "total_time_in_bed": "@body('JSON_の解析')?['summary']?['totalTimeInBed']",
+                "sleep_deep": "@body('JSON_の解析')?['summary']?['stages']?['deep']",
+                "sleep_light": "@body('JSON_の解析')?['summary']?['stages']?['light']",
+                "sleep_rem": "@body('JSON_の解析')?['summary']?['stages']?['rem']",
+                "sleep_wake": "@body('JSON_の解析')?['summary']?['stages']?['wake']"
+              },
+              "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/tables/@{encodeURIComponent(encodeURIComponent('[dbo].[sleep_log_summary]'))}/items",
+              "retryPolicy": {
+                "type": "None"
+              }
+            }
+          }
+        },
+        "runAfter": {
+          "JSON_の解析": [
+            "SUCCEEDED"
+          ]
+        }
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "When_a_HTTP_request_is_received": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": {
+          "method": "POST",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "date"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "kind": "Stateful"
+}

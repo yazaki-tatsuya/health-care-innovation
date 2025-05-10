@@ -1,0 +1,155 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                    "method": "POST",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "date": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "date"
+                        ]
+                    }
+                }
+            }
+        },
+        "actions": {
+            "BLOB_コンテンツを取得する_(V2)": {
+                "type": "ApiConnection",
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "referenceName": "azureblob"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+                    "queries": {
+                        "inferContentType": true
+                    }
+                },
+                "runAfter": {}
+            },
+            "HTTP": {
+                "type": "Http",
+                "inputs": {
+                    "uri": "https://api.fitbit.com/1/user/BDJQ64/activities/heart/date/@{triggerBody()?['date']}/1d/1sec.json",
+                    "method": "GET",
+                    "headers": {
+                        "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
+                    }
+                },
+                "runAfter": {
+                    "BLOB_コンテンツを取得する_(V2)": [
+                        "SUCCEEDED"
+                    ]
+                },
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                }
+            },
+            "JSON_の解析": {
+                "type": "ParseJson",
+                "inputs": {
+                    "content": "@body('HTTP')",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "activities-heart": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "dateTime": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "activities-heart-intraday": {
+                                "type": "object",
+                                "properties": {
+                                    "dataset": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "time": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "datasetInterval": {
+                                        "type": "integer"
+                                    },
+                                    "datasetType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "runAfter": {
+                    "HTTP": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "BuildRatesArray": {
+                "type": "Select",
+                "inputs": {
+                    "from": "@body('JSON_の解析')?['activities-heart-intraday']?['dataset']",
+                    "select": {
+                        "client_id": "BDJQ64",
+                        "date": "@first(body('JSON_の解析')?['activities-heart'])?['dateTime']",
+                        "time": "@item()?['time']",
+                        "value": "@item()?['value']"
+                    }
+                },
+                "runAfter": {
+                    "JSON_の解析": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "ストアド_プロシージャを実行する_(V2)": {
+                "type": "ApiConnection",
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "referenceName": "sql"
+                        }
+                    },
+                    "method": "post",
+                    "body": {
+                        "json": "@string(body('BuildRatesArray'))"
+                    },
+                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[InsertHeartRatesFromJson]'))}"
+                },
+                "runAfter": {
+                    "BuildRatesArray": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {}
+    },
+    "kind": "Stateful"
+}

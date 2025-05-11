@@ -40,30 +40,44 @@ GO
 PRINT N'sleep_log テーブルを再作成します';
 CREATE TABLE dbo.sleep_log
 (
-    /* ------- 基本キー ------- */
-    client_id NVARCHAR(50) NOT NULL,
-    log_date  DATE         NOT NULL,
+    -- ① キー／メタ
+    client_id        NVARCHAR(50)  NOT NULL,
+    log_date         DATE          NOT NULL,
+    sleep_log_id     BIGINT        NULL,
+    is_main_sleep    BIT           NULL,
+    type             NVARCHAR(20)  NULL,
 
-    /* ------- 時系列情報 ------- */
-    start_time DATETIME NULL,   -- ベッドに入った時刻
-    end_time   DATETIME NULL,   -- ベッドを出た時刻
+    -- ② タイムライン
+    start_time             DATETIME NULL,
+    end_time               DATETIME NULL,
+    total_time_in_bed      INT      NULL,
+    minutes_to_fall_asleep INT      NULL,
+    minutes_after_wakeup   INT      NULL,
 
-    /* ------- ベッドにいた時間 / 前後プロセス ------- */
-    total_time_in_bed      INT NULL,  -- ベッド滞在総時間
-    minutes_to_fall_asleep INT NULL,  -- ベッドに入ってから眠るまで
-    minutes_after_wakeup   INT NULL,  -- 目覚めてからベッドを出るまで
+    -- ③ 集計スコア
+    total_minutes_asleep INT NULL,
+    sleep_efficiency     INT NULL,
+    sleep_score          INT NULL,
+    score_duration       INT NULL,
+    score_composition    INT NULL,
+    score_revitalization INT NULL,
 
-    /* ------- 睡眠時間と効率 ------- */
-    total_minutes_asleep INT NULL,    -- 実際に眠っていた総時間
-    sleep_efficiency     INT NULL,    -- 睡眠効率（%）
+    -- ④ 目覚め指標
+    awakenings_count     INT NULL,
+    awakenings_duration  INT NULL,
 
-    /* ------- ステージ別内訳 ------- */
-    minutes_deep_sleep  INT NULL,
-    minutes_light_sleep INT NULL,
-    minutes_rem_sleep   INT NULL,
-    minutes_awake       INT NULL,
+    -- ⑤ ステージ詳細
+    minutes_deep_sleep   INT NULL,
+    minutes_light_sleep  INT NULL,
+    minutes_rem_sleep    INT NULL,
+    minutes_awake        INT NULL,
 
-    /* ------- ローデータ ------- */
+    -- ⑥ 生体指標
+    avg_hr_sleep        INT         NULL,
+    breathing_rate      DECIMAL(4,1) NULL,
+    skin_temp_deviation DECIMAL(4,1) NULL,
+
+    -- ⑦ ローデータ
     raw_json NVARCHAR(MAX) NULL,
 
     CONSTRAINT PK_sleep_log PRIMARY KEY CLUSTERED (client_id, log_date)

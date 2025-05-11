@@ -1,17 +1,35 @@
-#---- 掲載時不要START ----#
-import sys,os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#---- 掲載時不要END ----#
 import datetime as dt
 import requests
 import time
-import env
+
+import os
+import sys
+from dotenv import load_dotenv
+
+# 1) .env 読み込み
+#    必要なら dotenv_path でフルパスを指定してください
+load_dotenv()
+
+# 2) 環境変数取得＆デバッグ出力
+base_path = os.getenv("PROJECT_ROOT_PATH")
+print("🔍 PROJECT_ROOT_PATH =", base_path)
+if not base_path:
+    raise RuntimeError("❌ PROJECT_ROOT_PATH が取得できません。 .env の場所／中身を確認してください。")
+
+# 3) sys.path に追加＆デバッグ出力
+sys.path.insert(0, base_path)
+print("🔍 sys.path[0] =", sys.path[0])
+print("🔍 env.py exists?:", os.path.isfile(os.path.join(base_path, "env.py")))
+
+# 4) env モジュール読み込み
+import env  
+print("🔍 env module loaded:", env)
 
 # === ユーザー設定 ===
 LOGIC_APP_URL = env.get_env_variable("LOGIC_APP_URL_HEART")  # Logic App の URL
 
-START_DATE    = "2024-12-10"                      # 取得開始日 (yyyy-mm-dd)
-END_DATE      = "2024-12-11"                       # 取得終了日 (空なら今日)
+START_DATE    = "2024-12-12"                      # 取得開始日 (yyyy-mm-dd)
+END_DATE      = "2024-12-12"                       # 取得終了日 (空なら今日)
 PAUSE_SEC     = 30                                 # API 呼び出し間隔（秒）負荷対策
 # ===========================================================
 def date_range(start: str, end: str):

@@ -38,18 +38,34 @@ GO
 
 -- ④ sleep_log テーブルを再作成
 PRINT N'sleep_log テーブルを再作成します';
-CREATE TABLE dbo.sleep_log (
-    client_id            NVARCHAR(50)  NOT NULL,
-    log_date             DATE          NOT NULL,
-    start_time           DATETIME      NULL,
-    end_time             DATETIME      NULL,
-    total_minutes_asleep INT           NULL,
-    sleep_efficiency     INT           NULL,
-    minutes_deep_sleep   INT           NULL,
-    minutes_light_sleep  INT           NULL,
-    minutes_rem_sleep    INT           NULL,
-    minutes_awake        INT           NULL,
-    raw_json             NVARCHAR(MAX) NULL,
+CREATE TABLE dbo.sleep_log
+(
+    /* ------- 基本キー ------- */
+    client_id NVARCHAR(50) NOT NULL,
+    log_date  DATE         NOT NULL,
+
+    /* ------- 時系列情報 ------- */
+    start_time DATETIME NULL,   -- ベッドに入った時刻
+    end_time   DATETIME NULL,   -- ベッドを出た時刻
+
+    /* ------- ベッドにいた時間 / 前後プロセス ------- */
+    total_time_in_bed      INT NULL,  -- ベッド滞在総時間
+    minutes_to_fall_asleep INT NULL,  -- ベッドに入ってから眠るまで
+    minutes_after_wakeup   INT NULL,  -- 目覚めてからベッドを出るまで
+
+    /* ------- 睡眠時間と効率 ------- */
+    total_minutes_asleep INT NULL,    -- 実際に眠っていた総時間
+    sleep_efficiency     INT NULL,    -- 睡眠効率（%）
+
+    /* ------- ステージ別内訳 ------- */
+    minutes_deep_sleep  INT NULL,
+    minutes_light_sleep INT NULL,
+    minutes_rem_sleep   INT NULL,
+    minutes_awake       INT NULL,
+
+    /* ------- ローデータ ------- */
+    raw_json NVARCHAR(MAX) NULL,
+
     CONSTRAINT PK_sleep_log PRIMARY KEY CLUSTERED (client_id, log_date)
 );
 PRINT N'sleep_log テーブルの再作成が完了しました';

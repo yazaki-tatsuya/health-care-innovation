@@ -40,21 +40,23 @@ GO
 PRINT N'sleep_log テーブルを再作成します';
 CREATE TABLE dbo.sleep_log
 (
-    -- ① キー／メタ
+    -- キー／メタ
     client_id        NVARCHAR(50)  NOT NULL,
     log_date         DATE          NOT NULL,
     sleep_log_id     BIGINT        NULL,
     is_main_sleep    BIT           NULL,
     type             NVARCHAR(20)  NULL,
 
-    -- ② タイムライン
+    -- タイムライン
     start_time             DATETIME NULL,
     end_time               DATETIME NULL,
     total_time_in_bed      INT      NULL,
     minutes_to_fall_asleep INT      NULL,
     minutes_after_wakeup   INT      NULL,
+    nap_count         INT  NULL,  -- 日次ナップ回数 (is_main_sleep=0 の件数)
+    total_nap_minutes INT  NULL,  -- 日次ナップ合計分
 
-    -- ③ 集計スコア
+    -- 集計スコア
     total_minutes_asleep INT NULL,
     sleep_efficiency     INT NULL,
     sleep_score          INT NULL,
@@ -62,22 +64,22 @@ CREATE TABLE dbo.sleep_log
     score_composition    INT NULL,
     score_revitalization INT NULL,
 
-    -- ④ 目覚め指標
+    -- 目覚め指標
     awakenings_count     INT NULL,
     awakenings_duration  INT NULL,
 
-    -- ⑤ ステージ詳細
+    -- ステージ詳細
     minutes_deep_sleep   INT NULL,
     minutes_light_sleep  INT NULL,
     minutes_rem_sleep    INT NULL,
     minutes_awake        INT NULL,
 
-    -- ⑥ 生体指標
+    -- 生体指標
     avg_hr_sleep        INT         NULL,
     breathing_rate      DECIMAL(4,1) NULL,
     skin_temp_deviation DECIMAL(4,1) NULL,
 
-    -- ⑦ ローデータ
+    -- ローデータ
     raw_json NVARCHAR(MAX) NULL,
 
     CONSTRAINT PK_sleep_log PRIMARY KEY CLUSTERED (client_id, log_date)

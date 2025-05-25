@@ -26,7 +26,7 @@ print("🔍 env module loaded:", env)
 
 # === ユーザー設定 ===
 LOGIC_APP_URL = env.get_env_variable("LOGIC_APP_URL_SLEEP")  # Logic App の URL
-START_DATE    = "2024-05-02"                                # 取得開始日 (yyyy-mm-dd)
+START_DATE    = "2025-04-01"                                # 取得開始日 (yyyy-mm-dd)
 END_DATE      = "2025-05-10"                                # 取得終了日 (空文字 or None なら今日)
 PAUSE_SEC     = 30                                          # API 呼び出し間隔（秒）
 MAX_RETRIES   = 3                                           # リトライ回数

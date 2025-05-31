@@ -45,7 +45,7 @@
           "method": "GET",
           "queries": {
             "access_token": "Bearer @{body('BLOB_コンテンツを取得する_(V2)_-_access_token')}",
-            "code": "${AZURE_FUNCTION_KEY}",
+            "code": "@appsetting('get-fitbit-token-get-new-token')",
             "refresh_token": "@{body('BLOB_コンテンツを取得する_(V2)_-_refresh_token')}"
           }
         },

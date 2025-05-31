@@ -1,0 +1,282 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "Recurrence": {
+        "type": "Recurrence",
+        "recurrence": {
+          "interval": 1440,
+          "frequency": "Minute",
+          "startTime": "2025-04-29T16:00:05Z"
+        }
+      }
+    },
+    "actions": {
+      "GetAccessToken": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {}
+      },
+      "CallFitbitSleepAPI": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://api.fitbit.com/1.2/user/-/sleep/date/@{triggerBody()?['date']}.json",
+          "method": "GET",
+          "headers": {
+            "Authorization": "Bearer @{body('GetAccessToken')}"
+          }
+        },
+        "runAfter": {
+          "GetAccessToken": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "ParseSleepJSON": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@body('CallFitbitSleepAPI')",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "sleep": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "startTime": {
+                      "type": "string"
+                    },
+                    "endTime": {
+                      "type": "string"
+                    },
+                    "efficiency": {
+                      "type": "integer"
+                    },
+                    "levels": {
+                      "type": "object",
+                      "properties": {
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "deep": {
+                              "type": "object",
+                              "properties": {
+                                "minutes": {
+                                  "type": "integer"
+                                }
+                              }
+                            },
+                            "light": {
+                              "type": "object",
+                              "properties": {
+                                "minutes": {
+                                  "type": "integer"
+                                }
+                              }
+                            },
+                            "rem": {
+                              "type": "object",
+                              "properties": {
+                                "minutes": {
+                                  "type": "integer"
+                                }
+                              }
+                            },
+                            "wake": {
+                              "type": "object",
+                              "properties": {
+                                "minutes": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "runAfter": {
+          "CallFitbitSleepAPI": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "CountSleep": {
+        "type": "Compose",
+        "inputs": "@length(body('ParseSleepJSON')?['sleep'])",
+        "runAfter": {
+          "ParseSleepJSON": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "InitializeNapCount": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "NapCount",
+              "type": "Integer",
+              "value": 0
+            }
+          ]
+        },
+        "runAfter": {
+          "CountSleep": [
+            "Succeeded"
+          ]
+        }
+      },
+      "InitializeTotalNapMinutes": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "TotalNapMinutes",
+              "type": "Integer",
+              "value": 0
+            }
+          ]
+        },
+        "runAfter": {
+          "InitializeNapCount": [
+            "Succeeded"
+          ]
+        }
+      },
+      "CheckHasData": {
+        "type": "If",
+        "expression": "@greater(outputs('CountSleep'), 0)",
+        "actions": {
+          "FilterMainSleep": {
+            "type": "Query",
+            "inputs": {
+              "from": "@body('ParseSleepJSON')?['sleep']",
+              "where": "@equals(item()?['isMainSleep'], true)"
+            }
+          },
+          "FilterNapSleep": {
+            "type": "Query",
+            "inputs": {
+              "from": "@body('ParseSleepJSON')?['sleep']",
+              "where": "@equals(item()?['isMainSleep'], false)"
+            },
+            "runAfter": {
+              "FilterMainSleep": [
+                "Succeeded"
+              ]
+            }
+          },
+          "ForEach_Nap": {
+            "type": "Foreach",
+            "foreach": "@body('FilterNapSleep')",
+            "actions": {
+              "IncrementNapCount": {
+                "type": "IncrementVariable",
+                "inputs": {
+                  "name": "NapCount",
+                  "value": 1
+                }
+              },
+              "AddNapMinutes": {
+                "type": "IncrementVariable",
+                "inputs": {
+                  "name": "TotalNapMinutes",
+                  "value": "@item()?['minutesAsleep']"
+                }
+              }
+            },
+            "runAfter": {
+              "FilterNapSleep": [
+                "Succeeded"
+              ]
+            }
+          },
+          "PrepareData": {
+            "type": "Compose",
+            "inputs": {
+              "client_id": "BDJQ64",
+              "log_date": "@triggerBody()?['date']",
+              "sleep_log_id": "@first(body('FilterMainSleep'))?['logId']",
+              "is_main_sleep": "@first(body('FilterMainSleep'))?['isMainSleep']",
+              "type": "@first(body('FilterMainSleep'))?['type']",
+              "start_time": "@first(body('FilterMainSleep'))?['startTime']",
+              "end_time": "@first(body('FilterMainSleep'))?['endTime']",
+              "total_time_in_bed": "@body('ParseSleepJSON')?['summary']?['totalTimeInBed']",
+              "minutes_to_fall_asleep": "@first(body('FilterMainSleep'))?['minutesToFallAsleep']",
+              "minutes_after_wakeup": "@first(body('FilterMainSleep'))?['minutesAfterWakeup']",
+              "nap_count": "@variables('NapCount')",
+              "total_nap_minutes": "@variables('TotalNapMinutes')",
+              "total_minutes_asleep": "@first(body('FilterMainSleep'))?['minutesAsleep']",
+              "sleep_efficiency": "@first(body('FilterMainSleep'))?['efficiency']",
+              "sleep_score": "@first(body('FilterMainSleep'))?['score']",
+              "score_duration": "@first(body('FilterMainSleep'))?['scoreDetails']?['duration']?['score']",
+              "score_composition": "@first(body('FilterMainSleep'))?['scoreDetails']?['composition']?['score']",
+              "score_revitalization": "@first(body('FilterMainSleep'))?['scoreDetails']?['revitalization']?['score']",
+              "awakenings_count": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['count']",
+              "awakenings_duration": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['minutes']",
+              "minutes_deep_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['deep']?['minutes']",
+              "minutes_light_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['light']?['minutes']",
+              "minutes_rem_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['rem']?['minutes']",
+              "minutes_awake": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['minutes']",
+              "avg_hr_sleep": "@first(body('FilterMainSleep'))?['heartRate']?['average']",
+              "breathing_rate": "@first(body('FilterMainSleep'))?['breathingRate']",
+              "skin_temp_deviation": "@first(body('FilterMainSleep'))?['temperatureDeviation']",
+              "raw_json": "@string(body('CallFitbitSleepAPI'))"
+            },
+            "runAfter": {
+              "ForEach_Nap": [
+                "Succeeded"
+              ]
+            }
+          },
+          "CallAzureFunction": {
+            "type": "Http",
+            "inputs": {
+              "uri": "https://get-fitbit-token.azurewebsites.net/api/post_data_to_sqlserver",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/json",
+                "x-functions-key": "@appsetting('get-fitbit-token-post-data-to-sqlserver')"
+              },
+              "body": "@outputs('PrepareData')"
+            },
+            "runAfter": {
+              "PrepareData": [
+                "SUCCEEDED"
+              ]
+            }
+          }
+        },
+        "else": {
+          "actions": {}
+        },
+        "runAfter": {
+          "InitializeTotalNapMinutes": [
+            "Succeeded"
+          ]
+        }
+      }
+    },
+    "outputs": {}
+  },
+  "kind": "Stateful"
+}

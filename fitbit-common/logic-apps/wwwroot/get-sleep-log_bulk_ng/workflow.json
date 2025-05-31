@@ -3,12 +3,22 @@
     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
     "contentVersion": "1.0.0.0",
     "triggers": {
-      "Recurrence": {
-        "type": "Recurrence",
-        "recurrence": {
-          "interval": 1440,
-          "frequency": "Minute",
-          "startTime": "2025-04-29T16:00:05Z"
+      "When_a_HTTP_request_is_received": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": {
+          "method": "POST",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "date"
+            ]
+          }
         }
       }
     },
@@ -32,7 +42,7 @@
       "CallFitbitSleepAPI": {
         "type": "Http",
         "inputs": {
-          "uri": "https://api.fitbit.com/1.2/user/BDJQ64/sleep/date/@{triggerBody()?['date']}.json",
+          "uri": "https://api.fitbit.com/1.2/user/-/sleep/date/@{triggerBody()?['date']}.json",
           "method": "GET",
           "headers": {
             "Authorization": "Bearer @{body('GetAccessToken')}"
@@ -248,16 +258,46 @@
               ]
             }
           },
-          "CallAzureFunction": {
-            "type": "Http",
+          "InsertToSQL": {
+            "type": "ApiConnection",
             "inputs": {
-              "uri": "https://get-fitbit-token.azurewebsites.net/api/post_data_to_sqlserver",
-              "method": "POST",
-              "headers": {
-                "Content-Type": "application/json",
-                "x-functions-key": "@appsetting('get-fitbit-token-post-data-to-sqlserver')"
+              "host": {
+                "connection": {
+                  "referenceName": "sql"
+                }
               },
-              "body": "@outputs('PrepareData')"
+              "method": "post",
+              "body": {
+                "avg_hr_sleep": "@outputs('PrepareData')['avg_hr_sleep']",
+                "awakenings_count": "@outputs('PrepareData')['awakenings_count']",
+                "awakenings_duration": "@outputs('PrepareData')['awakenings_duration']",
+                "breathing_rate": "@outputs('PrepareData')['breathing_rate']",
+                "client_id": "@outputs('PrepareData')['client_id']",
+                "end_time": "@outputs('PrepareData')['end_time']",
+                "is_main_sleep": "@outputs('PrepareData')['is_main_sleep']",
+                "log_date": "@outputs('PrepareData')['log_date']",
+                "minutes_after_wakeup": "@outputs('PrepareData')['minutes_after_wakeup']",
+                "minutes_awake": "@outputs('PrepareData')['minutes_awake']",
+                "minutes_deep_sleep": "@outputs('PrepareData')['minutes_deep_sleep']",
+                "minutes_light_sleep": "@outputs('PrepareData')['minutes_light_sleep']",
+                "minutes_rem_sleep": "@outputs('PrepareData')['minutes_rem_sleep']",
+                "minutes_to_fall_asleep": "@outputs('PrepareData')['minutes_to_fall_asleep']",
+                "nap_count": "@outputs('PrepareData')['nap_count']",
+                "raw_json": "@outputs('PrepareData')['raw_json']",
+                "score_composition": "@outputs('PrepareData')['score_composition']",
+                "score_duration": "@outputs('PrepareData')['score_duration']",
+                "score_revitalization": "@outputs('PrepareData')['score_revitalization']",
+                "skin_temp_deviation": "@outputs('PrepareData')['skin_temp_deviation']",
+                "sleep_efficiency": "@outputs('PrepareData')['sleep_efficiency']",
+                "sleep_log_id": "@outputs('PrepareData')['sleep_log_id']",
+                "sleep_score": "@outputs('PrepareData')['sleep_score']",
+                "start_time": "@outputs('PrepareData')['start_time']",
+                "total_minutes_asleep": "@outputs('PrepareData')['total_minutes_asleep']",
+                "total_nap_minutes": "@outputs('PrepareData')['total_nap_minutes']",
+                "total_time_in_bed": "@outputs('PrepareData')['total_time_in_bed']",
+                "type": "@outputs('PrepareData')['type']"
+              },
+              "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[InsertSleepLog]'))}"
             },
             "runAfter": {
               "PrepareData": [

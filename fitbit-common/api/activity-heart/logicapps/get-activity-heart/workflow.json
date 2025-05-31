@@ -1,145 +1,142 @@
 {
   "definition": {
-      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-      "actions": {
-          "BLOB_コンテンツを取得する_(V2)": {
-              "type": "ApiConnection",
-              "inputs": {
-                  "host": {
-                      "connection": {
-                          "referenceName": "azureblob"
-                      }
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "BLOB_コンテンツを取得する_(V2)": {
+        "type": "ApiConnection",
+        "inputs": {
+          "host": {
+            "connection": {
+              "referenceName": "azureblob"
+            }
+          },
+          "method": "get",
+          "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
+          "queries": {
+            "inferContentType": true
+          }
+        },
+        "runAfter": {}
+      },
+      "HTTP": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://api.fitbit.com/1/user/BDJQ64/activities/heart/date/@{formatDateTime(addDays(addHours(convertFromUtc(utcNow(),'Tokyo Standard Time'), +0),-1), 'yyyy-MM-dd')}/1d/1sec.json",
+          "method": "GET",
+          "headers": {
+            "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
+          }
+        },
+        "runAfter": {
+          "BLOB_コンテンツを取得する_(V2)": [
+            "SUCCEEDED"
+          ]
+        },
+        "runtimeConfiguration": {
+          "contentTransfer": {
+            "transferMode": "Chunked"
+          }
+        }
+      },
+      "JSON_の解析": {
+        "type": "ParseJson",
+        "inputs": {
+          "content": "@body('HTTP')",
+          "schema": {
+            "properties": {
+              "activities-heart": {
+                "items": {
+                  "properties": {
+                    "dateTime": {
+                      "type": "string"
+                    }
                   },
-                  "method": "get",
-                  "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent('/token-storage/access_token.txt'))}/content",
-                  "queries": {
-                      "inferContentType": true
-                  }
+                  "type": "object"
+                },
+                "type": "array"
               },
-              "runAfter": {}
-          },
-          "HTTP": {
-              "type": "Http",
-              "inputs": {
-                  "uri": "https://api.fitbit.com/1/user/BDJQ64/activities/heart/date/@{formatDateTime(addDays(addHours(convertFromUtc(utcNow(),'Tokyo Standard Time'), +0),-1), 'yyyy-MM-dd')}/1d/1sec.json",
-                  "method": "GET",
-                  "headers": {
-                      "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
-                  }
-              },
-              "runAfter": {
-                  "BLOB_コンテンツを取得する_(V2)": [
-                      "SUCCEEDED"
-                  ]
-              },
-              "runtimeConfiguration": {
-                  "contentTransfer": {
-                      "transferMode": "Chunked"
-                  }
-              }
-          },
-          "JSON_の解析": {
-              "type": "ParseJson",
-              "inputs": {
-                  "content": "@body('HTTP')",
-                  "schema": {
+              "activities-heart-intraday": {
+                "properties": {
+                  "dataset": {
+                    "items": {
                       "properties": {
-                          "activities-heart": {
-                              "items": {
-                                  "properties": {
-                                      "dateTime": {
-                                          "type": "string"
-                                      }
-                                  },
-                                  "type": "object"
-                              },
-                              "type": "array"
-                          },
-                          "activities-heart-intraday": {
-                              "properties": {
-                                  "dataset": {
-                                      "items": {
-                                          "properties": {
-                                              "time": {
-                                                  "type": "string"
-                                              },
-                                              "value": {
-                                                  "type": "integer"
-                                              }
-                                          },
-                                          "type": "object"
-                                      },
-                                      "type": "array"
-                                  },
-                                  "datasetInterval": {
-                                      "type": "integer"
-                                  },
-                                  "datasetType": {
-                                      "type": "string"
-                                  }
-                              },
-                              "type": "object"
-                          }
+                        "time": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "integer"
+                        }
                       },
                       "type": "object"
-                  }
-              },
-              "runAfter": {
-                  "HTTP": [
-                      "SUCCEEDED"
-                  ]
-              }
-          },
-          "BuildRatesArray": {
-              "type": "Select",
-              "inputs": {
-                  "from": "@body('JSON_の解析')?['activities-heart-intraday']?['dataset']",
-                  "select": {
-                      "client_id": "BDJQ64",
-                      "date": "@first(body('JSON_の解析')?['activities-heart'])?['dateTime']",
-                      "time": "@item()?['time']",
-                      "value": "@item()?['value']"
-                  }
-              },
-              "runAfter": {
-                  "JSON_の解析": [
-                      "SUCCEEDED"
-                  ]
-              }
-          },
-          "ストアド_プロシージャを実行する_(V2)": {
-              "type": "ApiConnection",
-              "inputs": {
-                  "host": {
-                      "connection": {
-                          "referenceName": "sql"
-                      }
+                    },
+                    "type": "array"
                   },
-                  "method": "post",
-                  "body": {
-                      "json": "@string(body('BuildRatesArray'))"
+                  "datasetInterval": {
+                    "type": "integer"
                   },
-                  "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[InsertHeartRatesFromJson]'))}"
-              },
-              "runAfter": {
-                  "BuildRatesArray": [
-                      "SUCCEEDED"
-                  ]
+                  "datasetType": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
               }
+            },
+            "type": "object"
           }
+        },
+        "runAfter": {
+          "HTTP": [
+            "SUCCEEDED"
+          ]
+        }
       },
-      "contentVersion": "1.0.0.0",
-      "outputs": {},
-      "triggers": {
-          "Recurrence": {
-              "type": "Recurrence",
-              "recurrence": {
-                  "interval": 1440,
-                  "frequency": "Minute",
-                  "startTime": "2025-04-29T16:00:05Z"
-              }
+      "BuildRatesArray": {
+        "type": "Select",
+        "inputs": {
+          "from": "@body('JSON_の解析')?['activities-heart-intraday']?['dataset']",
+          "select": {
+            "client_id": "BDJQ64",
+            "date": "@first(body('JSON_の解析')?['activities-heart'])?['dateTime']",
+            "time": "@item()?['time']",
+            "value": "@item()?['value']"
           }
+        },
+        "runAfter": {
+          "JSON_の解析": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "CallAzureFunction_HeartRates": {
+        "type": "Http",
+        "inputs": {
+          "uri": "https://get-fitbit-token.azurewebsites.net/api/post_data_to_sqlserver_heart",
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json",
+            "x-functions-key": "@appsetting('get-fitbit-token-post-data-to-sqlserver-heart')"
+          },
+          "body": "@body('BuildRatesArray')"
+        },
+        "runAfter": {
+          "BuildRatesArray": [
+            "SUCCEEDED"
+          ]
+        }
       }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "triggers": {
+      "Recurrence": {
+        "type": "Recurrence",
+        "recurrence": {
+          "interval": 1440,
+          "frequency": "Minute",
+          "startTime": "2025-04-29T16:00:05Z"
+        }
+      }
+    }
   },
   "kind": "Stateful"
 }

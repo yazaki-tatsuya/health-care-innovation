@@ -1,8 +1,19 @@
 {
   "definition": {
     "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "Recurrence": {
+        "type": "Recurrence",
+        "recurrence": {
+          "interval": 1440,
+          "frequency": "Minute",
+          "startTime": "2025-04-29T16:00:05Z"
+        }
+      }
+    },
     "actions": {
-      "BLOB_コンテンツを取得する_(V2)": {
+      "GetAccessToken": {
         "type": "ApiConnection",
         "inputs": {
           "host": {
@@ -18,303 +29,254 @@
         },
         "runAfter": {}
       },
-      "HTTP": {
+      "CallFitbitSleepAPI": {
         "type": "Http",
         "inputs": {
-          "uri": "https://api.fitbit.com/1.2/user/BDJQ64/sleep/date/@{formatDateTime(addDays(addHours(convertFromUtc(utcNow(),'Tokyo Standard Time'), +0),-1), 'yyyy-MM-dd')}.json",
+          "uri": "https://api.fitbit.com/1.2/user/BDJQ64/sleep/date/@{triggerBody()?['date']}.json",
           "method": "GET",
           "headers": {
-            "Authorization": "Bearer @{body('BLOB_コンテンツを取得する_(V2)')}"
+            "Authorization": "Bearer @{body('GetAccessToken')}"
           }
         },
         "runAfter": {
-          "BLOB_コンテンツを取得する_(V2)": [
+          "GetAccessToken": [
             "SUCCEEDED"
           ]
-        },
-        "runtimeConfiguration": {
-          "contentTransfer": {
-            "transferMode": "Chunked"
-          }
         }
       },
-      "JSON_の解析": {
+      "ParseSleepJSON": {
         "type": "ParseJson",
         "inputs": {
-          "content": "@body('HTTP')",
+          "content": "@body('CallFitbitSleepAPI')",
           "schema": {
+            "type": "object",
             "properties": {
               "sleep": {
+                "type": "array",
                 "items": {
+                  "type": "object",
                   "properties": {
-                    "dateOfSleep": {
+                    "startTime": {
                       "type": "string"
-                    },
-                    "duration": {
-                      "type": "integer"
-                    },
-                    "efficiency": {
-                      "type": "integer"
                     },
                     "endTime": {
                       "type": "string"
                     },
-                    "infoCode": {
+                    "efficiency": {
                       "type": "integer"
-                    },
-                    "isMainSleep": {
-                      "type": "boolean"
                     },
                     "levels": {
+                      "type": "object",
                       "properties": {
-                        "data": {
-                          "items": {
-                            "properties": {
-                              "dateTime": {
-                                "type": "string"
-                              },
-                              "level": {
-                                "type": "string"
-                              },
-                              "seconds": {
-                                "type": "integer"
-                              }
-                            },
-                            "required": [
-                              "dateTime",
-                              "level",
-                              "seconds"
-                            ],
-                            "type": "object"
-                          },
-                          "type": "array"
-                        },
-                        "shortData": {
-                          "items": {
-                            "properties": {
-                              "dateTime": {
-                                "type": "string"
-                              },
-                              "level": {
-                                "type": "string"
-                              },
-                              "seconds": {
-                                "type": "integer"
-                              }
-                            },
-                            "required": [
-                              "dateTime",
-                              "level",
-                              "seconds"
-                            ],
-                            "type": "object"
-                          },
-                          "type": "array"
-                        },
                         "summary": {
+                          "type": "object",
                           "properties": {
                             "deep": {
+                              "type": "object",
                               "properties": {
-                                "count": {
-                                  "type": "integer"
-                                },
                                 "minutes": {
                                   "type": "integer"
-                                },
-                                "thirtyDayAvgMinutes": {
-                                  "type": "integer"
                                 }
-                              },
-                              "type": "object"
+                              }
                             },
                             "light": {
+                              "type": "object",
                               "properties": {
-                                "count": {
-                                  "type": "integer"
-                                },
                                 "minutes": {
                                   "type": "integer"
-                                },
-                                "thirtyDayAvgMinutes": {
-                                  "type": "integer"
                                 }
-                              },
-                              "type": "object"
+                              }
                             },
                             "rem": {
+                              "type": "object",
                               "properties": {
-                                "count": {
-                                  "type": "integer"
-                                },
                                 "minutes": {
                                   "type": "integer"
-                                },
-                                "thirtyDayAvgMinutes": {
-                                  "type": "integer"
                                 }
-                              },
-                              "type": "object"
+                              }
                             },
                             "wake": {
+                              "type": "object",
                               "properties": {
-                                "count": {
-                                  "type": "integer"
-                                },
                                 "minutes": {
                                   "type": "integer"
-                                },
-                                "thirtyDayAvgMinutes": {
-                                  "type": "integer"
                                 }
-                              },
-                              "type": "object"
+                              }
                             }
-                          },
-                          "type": "object"
+                          }
                         }
-                      },
-                      "type": "object"
-                    },
-                    "logId": {
-                      "type": "integer"
-                    },
-                    "logType": {
-                      "type": "string"
-                    },
-                    "minutesAfterWakeup": {
-                      "type": "integer"
-                    },
-                    "minutesAsleep": {
-                      "type": "integer"
-                    },
-                    "minutesAwake": {
-                      "type": "integer"
-                    },
-                    "minutesToFallAsleep": {
-                      "type": "integer"
-                    },
-                    "startTime": {
-                      "type": "string"
-                    },
-                    "timeInBed": {
-                      "type": "integer"
-                    },
-                    "type": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "dateOfSleep",
-                    "duration",
-                    "efficiency",
-                    "endTime",
-                    "infoCode",
-                    "isMainSleep",
-                    "levels",
-                    "logId",
-                    "logType",
-                    "minutesAfterWakeup",
-                    "minutesAsleep",
-                    "minutesAwake",
-                    "minutesToFallAsleep",
-                    "startTime",
-                    "timeInBed",
-                    "type"
-                  ],
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              "summary": {
-                "properties": {
-                  "stages": {
-                    "properties": {
-                      "deep": {
-                        "type": "integer"
-                      },
-                      "light": {
-                        "type": "integer"
-                      },
-                      "rem": {
-                        "type": "integer"
-                      },
-                      "wake": {
-                        "type": "integer"
                       }
-                    },
-                    "type": "object"
-                  },
-                  "totalMinutesAsleep": {
-                    "type": "integer"
-                  },
-                  "totalSleepRecords": {
-                    "type": "integer"
-                  },
-                  "totalTimeInBed": {
-                    "type": "integer"
+                    }
                   }
-                },
-                "type": "object"
-              }
-            },
-            "type": "object"
-          }
-        },
-        "runAfter": {
-          "HTTP": [
-            "SUCCEEDED"
-          ]
-        }
-      },
-      "For_each": {
-        "type": "Foreach",
-        "foreach": "@body('JSON_の解析')?['sleep']",
-        "actions": {
-          "行を挿入する_(V2)": {
-            "type": "ApiConnection",
-            "inputs": {
-              "host": {
-                "connection": {
-                  "referenceName": "sql"
                 }
-              },
-              "method": "post",
-              "body": {
-                "client_id": "2398GC",
-                "date_of_sleep": "@items('For_each')?['dateOfSleep']",
-                "sleep_start_time": "@items('For_each')?['startTime']",
-                "sleep_end_time": "@items('For_each')?['endTime']",
-                "minutes_to_fall_asleep": "@{items('For_each')?['minutesToFallAsleep']}",
-                "total_minutes_asleep": "@body('JSON_の解析')?['summary']?['totalMinutesAsleep']",
-                "total_time_in_bed": "@body('JSON_の解析')?['summary']?['totalTimeInBed']",
-                "sleep_deep": "@body('JSON_の解析')?['summary']?['stages']?['deep']",
-                "sleep_light": "@body('JSON_の解析')?['summary']?['stages']?['light']",
-                "sleep_rem": "@body('JSON_の解析')?['summary']?['stages']?['rem']",
-                "sleep_wake": "@body('JSON_の解析')?['summary']?['stages']?['wake']"
-              },
-              "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/tables/@{encodeURIComponent(encodeURIComponent('[dbo].[sleep_log_summary]'))}/items"
+              }
             }
           }
         },
         "runAfter": {
-          "JSON_の解析": [
+          "CallFitbitSleepAPI": [
             "SUCCEEDED"
+          ]
+        }
+      },
+      "CountSleep": {
+        "type": "Compose",
+        "inputs": "@length(body('ParseSleepJSON')?['sleep'])",
+        "runAfter": {
+          "ParseSleepJSON": [
+            "SUCCEEDED"
+          ]
+        }
+      },
+      "InitializeNapCount": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "NapCount",
+              "type": "Integer",
+              "value": 0
+            }
+          ]
+        },
+        "runAfter": {
+          "CountSleep": [
+            "Succeeded"
+          ]
+        }
+      },
+      "InitializeTotalNapMinutes": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "TotalNapMinutes",
+              "type": "Integer",
+              "value": 0
+            }
+          ]
+        },
+        "runAfter": {
+          "InitializeNapCount": [
+            "Succeeded"
+          ]
+        }
+      },
+      "CheckHasData": {
+        "type": "If",
+        "expression": "@greater(outputs('CountSleep'), 0)",
+        "actions": {
+          "FilterMainSleep": {
+            "type": "Query",
+            "inputs": {
+              "from": "@body('ParseSleepJSON')?['sleep']",
+              "where": "@equals(item()?['isMainSleep'], true)"
+            }
+          },
+          "FilterNapSleep": {
+            "type": "Query",
+            "inputs": {
+              "from": "@body('ParseSleepJSON')?['sleep']",
+              "where": "@equals(item()?['isMainSleep'], false)"
+            },
+            "runAfter": {
+              "FilterMainSleep": [
+                "Succeeded"
+              ]
+            }
+          },
+          "ForEach_Nap": {
+            "type": "Foreach",
+            "foreach": "@body('FilterNapSleep')",
+            "actions": {
+              "IncrementNapCount": {
+                "type": "IncrementVariable",
+                "inputs": {
+                  "name": "NapCount",
+                  "value": 1
+                }
+              },
+              "AddNapMinutes": {
+                "type": "IncrementVariable",
+                "inputs": {
+                  "name": "TotalNapMinutes",
+                  "value": "@item()?['minutesAsleep']"
+                }
+              }
+            },
+            "runAfter": {
+              "FilterNapSleep": [
+                "Succeeded"
+              ]
+            }
+          },
+          "PrepareData": {
+            "type": "Compose",
+            "inputs": {
+              "client_id": "BDJQ64",
+              "log_date": "@triggerBody()?['date']",
+              "sleep_log_id": "@first(body('FilterMainSleep'))?['logId']",
+              "is_main_sleep": "@first(body('FilterMainSleep'))?['isMainSleep']",
+              "type": "@first(body('FilterMainSleep'))?['type']",
+              "start_time": "@first(body('FilterMainSleep'))?['startTime']",
+              "end_time": "@first(body('FilterMainSleep'))?['endTime']",
+              "total_time_in_bed": "@body('ParseSleepJSON')?['summary']?['totalTimeInBed']",
+              "minutes_to_fall_asleep": "@first(body('FilterMainSleep'))?['minutesToFallAsleep']",
+              "minutes_after_wakeup": "@first(body('FilterMainSleep'))?['minutesAfterWakeup']",
+              "nap_count": "@variables('NapCount')",
+              "total_nap_minutes": "@variables('TotalNapMinutes')",
+              "total_minutes_asleep": "@first(body('FilterMainSleep'))?['minutesAsleep']",
+              "sleep_efficiency": "@first(body('FilterMainSleep'))?['efficiency']",
+              "sleep_score": "@first(body('FilterMainSleep'))?['score']",
+              "score_duration": "@first(body('FilterMainSleep'))?['scoreDetails']?['duration']?['score']",
+              "score_composition": "@first(body('FilterMainSleep'))?['scoreDetails']?['composition']?['score']",
+              "score_revitalization": "@first(body('FilterMainSleep'))?['scoreDetails']?['revitalization']?['score']",
+              "awakenings_count": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['count']",
+              "awakenings_duration": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['minutes']",
+              "minutes_deep_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['deep']?['minutes']",
+              "minutes_light_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['light']?['minutes']",
+              "minutes_rem_sleep": "@first(body('FilterMainSleep'))?['levels']?['summary']?['rem']?['minutes']",
+              "minutes_awake": "@first(body('FilterMainSleep'))?['levels']?['summary']?['wake']?['minutes']",
+              "avg_hr_sleep": "@first(body('FilterMainSleep'))?['heartRate']?['average']",
+              "breathing_rate": "@first(body('FilterMainSleep'))?['breathingRate']",
+              "skin_temp_deviation": "@first(body('FilterMainSleep'))?['temperatureDeviation']",
+              "raw_json": "@string(body('CallFitbitSleepAPI'))"
+            },
+            "runAfter": {
+              "ForEach_Nap": [
+                "Succeeded"
+              ]
+            }
+          },
+          "CallAzureFunction": {
+            "type": "Http",
+            "inputs": {
+              "uri": "https://get-fitbit-token.azurewebsites.net/api/post_data_to_sqlserver",
+              "method": "POST",
+              "headers": {
+                "Content-Type": "application/json",
+                "x-functions-key": "@appsetting('get-fitbit-token-post-data-to-sqlserver')"
+              },
+              "body": "@outputs('PrepareData')"
+            },
+            "runAfter": {
+              "PrepareData": [
+                "SUCCEEDED"
+              ]
+            }
+          }
+        },
+        "else": {
+          "actions": {}
+        },
+        "runAfter": {
+          "InitializeTotalNapMinutes": [
+            "Succeeded"
           ]
         }
       }
     },
-    "contentVersion": "1.0.0.0",
-    "outputs": {},
-    "triggers": {
-      "Recurrence": {
-        "type": "Recurrence",
-        "recurrence": {
-          "interval": 1440,
-          "frequency": "Minute",
-          "startTime": "2025-04-29T16:00:05Z"
-        }
-      }
-    }
+    "outputs": {}
   },
   "kind": "Stateful"
 }

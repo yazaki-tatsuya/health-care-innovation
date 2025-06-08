@@ -59,10 +59,10 @@ CREATE TABLE dbo.sleep_log
     -- 集計スコア
     total_minutes_asleep INT NULL,
     sleep_efficiency     INT NULL,
-    sleep_score          INT NULL,
-    score_duration       INT NULL,
-    score_composition    INT NULL,
-    score_revitalization INT NULL,
+    sleep_score          INT NULL,  -- 2025年6月現在、睡眠のAPIでは取得不可
+    score_duration       INT NULL,  -- 2025年6月現在、睡眠のAPIでは取得不可
+    score_composition    INT NULL,  -- 2025年6月現在、睡眠のAPIでは取得不可
+    score_revitalization INT NULL,  -- 2025年6月現在、睡眠のAPIでは取得不可
 
     -- 目覚め指標
     awakenings_count     INT NULL,
@@ -75,9 +75,9 @@ CREATE TABLE dbo.sleep_log
     minutes_awake        INT NULL,
 
     -- 生体指標
-    avg_hr_sleep        INT         NULL,
-    breathing_rate      DECIMAL(4,1) NULL,
-    skin_temp_deviation DECIMAL(4,1) NULL,
+    avg_hr_sleep        INT         NULL, -- 睡眠のAPIでは取得不可だが、ActivityHeartsRate テーブルから取得可能のため、vw_SleepLogWithHeartRate ビューを参照すること。
+    breathing_rate      DECIMAL(4,1) NULL, -- 睡眠のAPIでは取得不可
+    skin_temp_deviation DECIMAL(4,1) NULL, -- 睡眠のAPIでは取得不可
 
     -- ローデータ
     raw_json NVARCHAR(MAX) NULL,

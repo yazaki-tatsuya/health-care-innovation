@@ -28,8 +28,8 @@ print("🔍 env module loaded:", env)
 # === ユーザー設定 ===
 LOGIC_APP_URL = env.get_env_variable("LOGIC_APP_URL_HEART")  # Logic App の URL
 
-START_DATE    = "2024-12-14"                      # 取得開始日 (yyyy-mm-dd)
-END_DATE      = "2024-12-14"                       # 取得終了日 (空なら今日)
+START_DATE    = "2024-12-15"                      # 取得開始日 (yyyy-mm-dd)
+END_DATE      = "2024-12-15"                       # 取得終了日 (空なら今日)
 PAUSE_SEC     = 30                                 # API 呼び出し間隔（秒）負荷対策
 # ===========================================================
 def date_range(start: str, end: str):

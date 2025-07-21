@@ -1,0 +1,283 @@
+table sleep_log
+	lineageTag: 7d5ae2a5-74bd-48f8-a24b-313e98b070f1
+
+	column client_id
+		dataType: string
+		lineageTag: 88d27213-03e9-4d7f-8823-5b2d091e3492
+		summarizeBy: none
+		sourceColumn: client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column log_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fb2eec87-f2b9-442c-a335-32614bfb18d3
+		summarizeBy: none
+		sourceColumn: log_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column sleep_log_id
+		dataType: int64
+		formatString: 0
+		lineageTag: da902b7b-8728-4af8-b38b-73b79fb20bed
+		summarizeBy: sum
+		sourceColumn: sleep_log_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_main_sleep
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5ca9e2b7-c040-4f95-bbd1-a96cf5313dc0
+		summarizeBy: none
+		sourceColumn: is_main_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column type
+		dataType: string
+		lineageTag: 1900f26e-160f-4120-88b1-a083c4360714
+		summarizeBy: none
+		sourceColumn: type
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 4c46407d-84e7-42ac-b3f3-31f22821a2d8
+		summarizeBy: none
+		sourceColumn: start_time
+
+		variation バリエーション
+			isDefault
+			relationship: 63d220ba-f256-46f7-855f-fbb5ab8baeab
+			defaultHierarchy: LocalDateTable_196c2278-ce6c-4d4b-913f-1baf011f41e3.日付の階層
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 16002913-e4a4-41b1-a2c7-ad74c99d85db
+		summarizeBy: none
+		sourceColumn: end_time
+
+		variation バリエーション
+			isDefault
+			relationship: b23cadc1-bd33-4660-b47e-08b2b4c18d63
+			defaultHierarchy: LocalDateTable_75c87065-9b47-4647-8027-451fd3457f2b.日付の階層
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_time_in_bed
+		dataType: int64
+		formatString: 0
+		lineageTag: fd907e2a-b367-4b4b-8ef1-0c5cf03c5ff5
+		summarizeBy: sum
+		sourceColumn: total_time_in_bed
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_to_fall_asleep
+		dataType: int64
+		formatString: 0
+		lineageTag: a2327b9c-5b49-48c3-a227-d185311443ff
+		summarizeBy: sum
+		sourceColumn: minutes_to_fall_asleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_after_wakeup
+		dataType: int64
+		formatString: 0
+		lineageTag: 73fd239f-caa0-4c8f-84aa-ce5908b2ea59
+		summarizeBy: sum
+		sourceColumn: minutes_after_wakeup
+
+		annotation SummarizationSetBy = Automatic
+
+	column nap_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 2385fe2a-38e0-4671-9fe9-905d88503b13
+		summarizeBy: sum
+		sourceColumn: nap_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_nap_minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: ca864da7-2926-46a0-9ea0-b22dd2813188
+		summarizeBy: sum
+		sourceColumn: total_nap_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_minutes_asleep
+		dataType: int64
+		formatString: 0
+		lineageTag: cd3ae9f7-c51a-42fb-ba58-fc794e960de9
+		summarizeBy: sum
+		sourceColumn: total_minutes_asleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column sleep_efficiency
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c8f0689-efed-4583-a136-6de2202bfc94
+		summarizeBy: sum
+		sourceColumn: sleep_efficiency
+
+		annotation SummarizationSetBy = Automatic
+
+	column sleep_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 459e991e-c911-4a9b-a580-04853398c63d
+		summarizeBy: sum
+		sourceColumn: sleep_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_duration
+		dataType: int64
+		formatString: 0
+		lineageTag: b3dabc07-fd61-4fd5-baff-da43a98efcfe
+		summarizeBy: sum
+		sourceColumn: score_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_composition
+		dataType: int64
+		formatString: 0
+		lineageTag: 1113ab59-0fda-4ea8-9cdc-c6b1d2440556
+		summarizeBy: sum
+		sourceColumn: score_composition
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_revitalization
+		dataType: int64
+		formatString: 0
+		lineageTag: f2d61e92-7bf2-4143-a2c5-0c228b1d2c47
+		summarizeBy: sum
+		sourceColumn: score_revitalization
+
+		annotation SummarizationSetBy = Automatic
+
+	column awakenings_count
+		dataType: int64
+		formatString: 0
+		lineageTag: f206ead0-3179-4118-b418-e54b2be776d3
+		summarizeBy: sum
+		sourceColumn: awakenings_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column awakenings_duration
+		dataType: int64
+		formatString: 0
+		lineageTag: 15efb5b1-b2bc-4c9d-82a3-579c66fb6e86
+		summarizeBy: sum
+		sourceColumn: awakenings_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_deep_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: a3bf93e1-c2be-47ea-90f5-ffbadd97e721
+		summarizeBy: sum
+		sourceColumn: minutes_deep_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_light_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 38a86f21-056b-4deb-b870-cd9b7ef8b22e
+		summarizeBy: sum
+		sourceColumn: minutes_light_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_rem_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: d2a3b5e4-7e3e-4010-a1ea-c031a9087f94
+		summarizeBy: sum
+		sourceColumn: minutes_rem_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_awake
+		dataType: int64
+		formatString: 0
+		lineageTag: 9223414e-36c7-4032-a374-ad73814d91c2
+		summarizeBy: sum
+		sourceColumn: minutes_awake
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_hr_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f0755ef-08d6-468e-8d3c-208f505f6fd2
+		summarizeBy: sum
+		sourceColumn: avg_hr_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column breathing_rate
+		dataType: double
+		lineageTag: 0f665e84-ba08-4077-aa59-f0e6a9551325
+		summarizeBy: sum
+		sourceColumn: breathing_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column skin_temp_deviation
+		dataType: double
+		lineageTag: b4464178-8d16-4eb5-a741-018cc0b1daa2
+		summarizeBy: sum
+		sourceColumn: skin_temp_deviation
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column raw_json
+		dataType: string
+		lineageTag: c7dcaf93-7cc0-42a8-b23a-4db04b601727
+		summarizeBy: none
+		sourceColumn: raw_json
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_hours_in_bed = [total_time_in_bed]/60
+		lineageTag: fd2d274e-eba5-4d79-9d80-bf6436fc6f39
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition sleep_log = m
+		mode: import
+		source =
+				let
+				    ソース = Sql.Database("biological-database-server.database.windows.net", "biological-database"),
+				    dbo_sleep_log = ソース{[Schema="dbo",Item="sleep_log"]}[Data]
+				in
+				    dbo_sleep_log
+

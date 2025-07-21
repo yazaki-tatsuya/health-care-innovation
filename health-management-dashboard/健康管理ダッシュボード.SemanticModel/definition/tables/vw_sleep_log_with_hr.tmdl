@@ -1,0 +1,171 @@
+table vw_sleep_log_with_hr
+	lineageTag: 2b770593-d8ad-41bf-8b4d-ebe49252f34e
+
+	column client_id
+		dataType: string
+		lineageTag: 5df9a255-6ebb-4494-bb15-365c8a52a5c4
+		summarizeBy: none
+		sourceColumn: client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column log_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 77f9e287-c423-4f2c-9cc7-1c00f706464b
+		summarizeBy: none
+		sourceColumn: log_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column sleep_log_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a9c23ba1-19c7-4e9a-852a-323cfa6e1379
+		summarizeBy: none
+		sourceColumn: sleep_log_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_main_sleep
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6b23cefc-c9ac-42cd-83b6-3afcf4d27af2
+		summarizeBy: none
+		sourceColumn: is_main_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7f157975-6474-4f26-bce0-99d75f5cac17
+		summarizeBy: none
+		sourceColumn: start_time
+
+		variation バリエーション
+			isDefault
+			relationship: 10e1da35-7734-4171-b757-e94afc3bab6c
+			defaultHierarchy: LocalDateTable_d58ae285-93ca-4985-bb37-09a1dfc4d93f.日付の階層
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 192463fc-79c0-4345-8f0f-5bfa26b14591
+		summarizeBy: none
+		sourceColumn: end_time
+
+		variation バリエーション
+			isDefault
+			relationship: b0821065-1bec-45ba-b83f-6016ce98f723
+			defaultHierarchy: LocalDateTable_b563ade6-4f19-45b6-a4f0-4ca216c6d3ca.日付の階層
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_minutes_asleep
+		dataType: int64
+		formatString: 0
+		lineageTag: cd23cc73-2098-48d6-aa7f-7c7b36790171
+		summarizeBy: sum
+		sourceColumn: total_minutes_asleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column sleep_efficiency
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a8da06c-2068-4b4b-a5b9-8a893d43acbf
+		summarizeBy: sum
+		sourceColumn: sleep_efficiency
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_nap_minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 6efbd675-0e18-410b-aaf5-a528d8c24aac
+		summarizeBy: sum
+		sourceColumn: total_nap_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nap_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 47234f07-fa12-47d7-b44c-22a6290dab4c
+		summarizeBy: sum
+		sourceColumn: nap_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_hr_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 0201c819-467f-4fe9-8546-4e8de24605ac
+		summarizeBy: sum
+		sourceColumn: avg_hr_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_deep_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e2add68-0f88-4ec4-9c0d-994f107c26eb
+		summarizeBy: sum
+		sourceColumn: minutes_deep_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_light_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 8c35c07d-b555-48e3-b7ac-42265f087ca4
+		summarizeBy: sum
+		sourceColumn: minutes_light_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_rem_sleep
+		dataType: int64
+		formatString: 0
+		lineageTag: 537cc068-8381-4e34-a88a-580de9078829
+		summarizeBy: sum
+		sourceColumn: minutes_rem_sleep
+
+		annotation SummarizationSetBy = Automatic
+
+	column minutes_awake
+		dataType: int64
+		formatString: 0
+		lineageTag: 43e52935-c30e-40c0-8746-14da2608e7be
+		summarizeBy: sum
+		sourceColumn: minutes_awake
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_time_in_bed
+		dataType: int64
+		formatString: 0
+		lineageTag: 40317209-e854-4196-ab0a-fc06f881ff7d
+		summarizeBy: sum
+		sourceColumn: total_time_in_bed
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vw_sleep_log_with_hr = m
+		mode: import
+		source =
+				let
+				    ソース = Sql.Database("biological-database-server.database.windows.net", "biological-database"),
+				    dbo_vw_sleep_log_with_hr = ソース{[Schema="dbo",Item="vw_sleep_log_with_hr"]}[Data]
+				in
+				    dbo_vw_sleep_log_with_hr
+
+	annotation PBI_NavigationStepName = ナビゲーション
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,41 @@
+model Model
+	culture: ja-JP
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: ja-JP
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["activities_heart_15min","activities_heart","vw_sleep_log_columns","sleep_log","vw_sleep_log_with_hr","vw_sleep_log_with_hr_for内訳","vw_activities_heart_hourly"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.145.1105.0 (25.07)+decbc46fce458c5b8d5109d6f32a743f2ac949c8
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","TMDLView_Desktop","DevMode"]
+
+ref table activities_heart_15min
+ref table DateTableTemplate_d9c43586-5936-4c9a-beba-99a9fb10fbb2
+ref table activities_heart
+ref table vw_sleep_log_columns
+ref table sleep_log
+ref table LocalDateTable_196c2278-ce6c-4d4b-913f-1baf011f41e3
+ref table LocalDateTable_75c87065-9b47-4647-8027-451fd3457f2b
+ref table _Measures_Sleep
+ref table Date
+ref table LocalDateTable_e9bc4512-1f77-4da4-97be-fae3242372b2
+ref table vw_sleep_log_with_hr
+ref table LocalDateTable_d58ae285-93ca-4985-bb37-09a1dfc4d93f
+ref table LocalDateTable_b563ade6-4f19-45b6-a4f0-4ca216c6d3ca
+ref table vw_sleep_log_with_hr_for内訳
+ref table LocalDateTable_6491c810-4cfe-44bc-af7d-e6ace28f375c
+ref table LocalDateTable_177472c6-5650-4110-acaf-d21564351a23
+ref table LocalDateTable_3b7812f3-9325-4bf3-9e0f-45e29aa6b4c5
+ref table _Measures_Heart
+ref table vw_activities_heart_hourly
+ref table LocalDateTable_e31ab992-6a9b-4ea9-a7e5-07fa621e6250
+ref table t_MotivationHealthSignals
+ref table t_DashboardSummary
+
+ref cultureInfo ja-JP
+

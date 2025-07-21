@@ -1,0 +1,310 @@
+{
+  "config": "{\"version\":\"5.59\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":\"5.64\"},\"customTheme\":{\"name\":\"Temperature\",\"type\":2,\"version\":\"5.64\"}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"useEnhancedTooltips\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "publicCustomVisuals": [],
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY24SU10",
+            "path": "BaseThemes/CY24SU10.json",
+            "type": 202
+          },
+          {
+            "name": "Temperature",
+            "path": "BuiltInThemes/Temperature.json",
+            "type": 201
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Heart Rate Analysis",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "497f09ad1b78d09e9b25",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"203083726217a30e1b5c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":999.7326937291638,\"y\":0,\"z\":1000,\"width\":268.1606854625816,\"height\":124.81211627521081,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Date.Date\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"},\"Name\":\"Date.Date\",\"NativeReferenceName\":\"Date\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}}}]},\"syncGroup\":{\"groupName\":\"Date\",\"fieldChanges\":true,\"filterChanges\":true},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"data\":[{\"properties\":{\"startDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}},\"endDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-08-31T00:00:00'\"}}},\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Where\":[{\"Condition\":{\"And\":{\"Left\":{\"Comparison\":{\"ComparisonKind\":2,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}}},\"Right\":{\"Comparison\":{\"ComparisonKind\":3,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-09-01T00:00:00'\"}}}}}}}]}}}}],\"header\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'日付フィルター'\"}}},\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}],\"date\":[{\"properties\":{\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 124.81,
+          "width": 268.16,
+          "x": 999.73,
+          "y": 0.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"2e5aeed70b728255c0ef\",\"layouts\":[{\"id\":0,\"position\":{\"x\":905.8146656408863,\"y\":114.92600805539213,\"z\":7000,\"width\":374.4363488256324,\"height\":605.524128463894,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"vw_activities_heart_hourly.date\"},{\"queryRef\":\"Sum(vw_activities_heart_hourly.hour)\"},{\"queryRef\":\"Sum(vw_activities_heart_hourly.avg_hr)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"vw_activities_heart_hourly\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"date\"},\"Name\":\"vw_activities_heart_hourly.date\",\"NativeReferenceName\":\"date\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"hour\"},\"Name\":\"Sum(vw_activities_heart_hourly.hour)\",\"NativeReferenceName\":\"hour\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"avg_hr\"}},\"Function\":1},\"Name\":\"Sum(vw_activities_heart_hourly.avg_hr)\",\"NativeReferenceName\":\"avg_hr の平均\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"grid\":[{\"properties\":{\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}],\"columnWidth\":[{\"properties\":{\"value\":{\"expr\":{\"Literal\":{\"Value\":\"55.82917801588296D\"}}}},\"selector\":{\"metadata\":\"Sum(vw_activities_heart_hourly.hour)\"}},{\"properties\":{\"value\":{\"expr\":{\"Literal\":{\"Value\":\"126.71524816149369D\"}}}},\"selector\":{\"metadata\":\"Sum(vw_activities_heart_hourly.avg_hr)\"}}],\"values\":[{\"properties\":{\"backColor\":{\"solid\":{\"color\":{\"expr\":{\"FillRule\":{\"Input\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"vw_activities_heart_hourly\"}},\"Property\":\"avg_hr\"}},\"Function\":1}},\"FillRule\":{\"linearGradient3\":{\"min\":{\"color\":{\"Literal\":{\"Value\":\"'#234990'\"}},\"value\":{\"Literal\":{\"Value\":\"60D\"}}},\"mid\":{\"color\":{\"Literal\":{\"Value\":\"'#FFFFFF'\"}}},\"max\":{\"color\":{\"Literal\":{\"Value\":\"'#EB5559'\"}},\"value\":{\"Literal\":{\"Value\":\"100D\"}}},\"nullColoringStrategy\":{\"strategy\":{\"Literal\":{\"Value\":\"'asZero'\"}}}}}}}}}}},\"selector\":{\"data\":[{\"dataViewWildcard\":{\"matchingOption\":1}}],\"metadata\":\"Sum(vw_activities_heart_hourly.avg_hr)\"}}]},\"vcObjects\":{\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"stylePreset\":[{\"properties\":{\"name\":{\"expr\":{\"Literal\":{\"Value\":\"'Default'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 605.52,
+          "width": 374.44,
+          "x": 905.81,
+          "y": 114.93,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"49cdc71840d24de1fce3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":221.33269644136615,\"y\":92.93527585383329,\"z\":3000,\"width\":191.9847145927872,\"height\":102.71793647002627,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures_Heart.m_MaxHR_Hourly\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Heart\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_MaxHR_Hourly\"},\"Name\":\"_Measures_Heart.m_MaxHR_Hourly\",\"NativeReferenceName\":\"m_MaxHR_Hourly\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_MaxHR_Hourly\"}}}]},\"columnProperties\":{\"_Measures.m_AnomalyCount\":{\"formatString\":null},\"_Measures_Heart.m_AnomalyCount\":{\"formatString\":null}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"labels\":[{\"properties\":{\"labelDisplayUnits\":{\"expr\":{\"Literal\":{\"Value\":\"1D\"}}}}}]},\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 102.72,
+          "width": 191.98,
+          "x": 221.33,
+          "y": 92.94,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"534e2fea5122479b3be3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":29.347981848578936,\"y\":92.93527585383329,\"z\":0,\"width\":191.9847145927872,\"height\":102.71793647002627,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures_Heart.m_AvgHR_Hourly\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Heart\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgHR_Hourly_5step\"},\"Name\":\"_Measures_Heart.m_AvgHR_Hourly\",\"NativeReferenceName\":\"m_AvgHR_Hourly_5step\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgHR_Hourly_5step\"}}}]},\"columnProperties\":{\"_Measures.m_AnomalyCount\":{\"formatString\":null},\"_Measures_Heart.m_AnomalyCount\":{\"formatString\":null}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"labels\":[{\"properties\":{\"labelDisplayUnits\":{\"expr\":{\"Literal\":{\"Value\":\"1D\"}}}}}]},\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 102.72,
+          "width": 191.98,
+          "x": 29.35,
+          "y": 92.94,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"68db846a867c38aadcec\",\"layouts\":[{\"id\":0,\"position\":{\"x\":29.347981848578936,\"y\":465.8992118461906,\"z\":2000,\"width\":876.7709577262957,\"height\":254.34917602101743,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"columnChart\",\"projections\":{\"Y\":[{\"queryRef\":\"Sum(activities_heart.value)\"}],\"Category\":[{\"queryRef\":\"Date.Date.バリエーション.日付の階層.年\",\"active\":true},{\"queryRef\":\"Date.Date.バリエーション.日付の階層.月\",\"active\":true},{\"queryRef\":\"Date.Date.バリエーション.日付の階層.日\",\"active\":true}],\"Series\":[{\"queryRef\":\"Date.IsWeekend\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"activities_heart\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"value\"}},\"Function\":1},\"Name\":\"Sum(activities_heart.value)\",\"NativeReferenceName\":\"value の平均\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Name\":\"バリエーション\",\"Property\":\"Date\"}},\"Hierarchy\":\"日付の階層\"}},\"Level\":\"年\"},\"Name\":\"Date.Date.バリエーション.日付の階層.年\",\"NativeReferenceName\":\"Date 年\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Name\":\"バリエーション\",\"Property\":\"Date\"}},\"Hierarchy\":\"日付の階層\"}},\"Level\":\"月\"},\"Name\":\"Date.Date.バリエーション.日付の階層.月\",\"NativeReferenceName\":\"Date 月\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Name\":\"バリエーション\",\"Property\":\"Date\"}},\"Hierarchy\":\"日付の階層\"}},\"Level\":\"日\"},\"Name\":\"Date.Date.バリエーション.日付の階層.日\",\"NativeReferenceName\":\"Date 日\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"IsWeekend\"},\"Name\":\"Date.IsWeekend\",\"NativeReferenceName\":\"IsWeekend\"}]},\"columnProperties\":{\"Sum(activities_heart.value)\":{\"formatString\":\"G\"}},\"drillFilterOtherVisuals\":true,\"objects\":{\"legend\":[{\"properties\":{\"showGradientLegend\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"labels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableTitleDataLabel\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"9D\"}}},\"enableBackground\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}},\"labelPrecision\":{\"expr\":{\"Literal\":{\"Value\":\"0L\"}}}}}],\"layout\":[{\"properties\":{\"stackedGapExplodes\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"categoryAxis\":[{\"properties\":{\"preferredCategoryWidth\":{\"expr\":{\"Literal\":{\"Value\":\"40D\"}}}}}],\"dataPoint\":[{\"properties\":{\"fill\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":3,\"Percent\":0.6}}}}}},\"selector\":{\"data\":[{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Date\"}},\"Property\":\"IsWeekend\"}},\"Right\":{\"Literal\":{\"Value\":\"'土日'\"}}}}}]}}]}}}",
+          "filters": "[]",
+          "height": 254.35,
+          "width": 876.77,
+          "x": 29.35,
+          "y": 465.90,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"7e3424b89d17b51f4ead\",\"layouts\":[{\"id\":0,\"position\":{\"x\":604.0792930499164,\"y\":92.93527585383329,\"z\":4000,\"width\":191.9847145927872,\"height\":102.71793647002627,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures_Heart.m_AnomalyCount\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Heart\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AnomalyCount\"},\"Name\":\"_Measures_Heart.m_AnomalyCount\",\"NativeReferenceName\":\"m_AnomalyCount\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AnomalyCount\"}}}]},\"columnProperties\":{\"_Measures.m_AnomalyCount\":{\"formatString\":null},\"_Measures_Heart.m_AnomalyCount\":{\"formatString\":\"#,0\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"labels\":[{\"properties\":{\"labelDisplayUnits\":{\"expr\":{\"Literal\":{\"Value\":\"1D\"}}}}}]},\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 102.72,
+          "width": 191.98,
+          "x": 604.08,
+          "y": 92.94,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"c5c8d8b1549362268b37\",\"layouts\":[{\"id\":0,\"position\":{\"x\":29.347981848578936,\"y\":14.673990924289468,\"z\":8000,\"width\":876.7709577262957,\"height\":78.26128492954383,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"📌 目的：睡眠中の心拍異常を把握し、ストレスや疲労の兆候を早期検知\",\"textStyle\":{\"fontWeight\":\"bold\"}}]},{\"textRuns\":[{\"value\":\"特に \"},{\"value\":\"睡眠時の安静時心拍（RHR）\",\"textStyle\":{\"fontWeight\":\"bold\"}},{\"value\":\" は「ストレス・回復状況」の可視化に有効とされ、長期トレンドで上昇する場合には「心身の慢性的な負荷」を示唆する可能性があります。\"}]}]}}]}}}",
+          "filters": "[]",
+          "height": 78.26,
+          "width": 876.77,
+          "x": 29.35,
+          "y": 14.67,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"d9cbdf4fb665dee6742a\",\"layouts\":[{\"id\":0,\"position\":{\"x\":413.31741103415334,\"y\":92.93527585383329,\"z\":5000,\"width\":190.7618820157631,\"height\":102.71793647002627,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures_Heart.m_StdDevHR_Hourly\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Heart\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_StdDevHR_Hourly\"},\"Name\":\"_Measures_Heart.m_StdDevHR_Hourly\",\"NativeReferenceName\":\"m_StdDevHR_Hourly\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_StdDevHR_Hourly\"}}}]},\"columnProperties\":{\"_Measures.m_AnomalyCount\":{\"formatString\":null},\"_Measures_Heart.m_AnomalyCount\":{\"formatString\":null}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"labels\":[{\"properties\":{\"labelDisplayUnits\":{\"expr\":{\"Literal\":{\"Value\":\"1D\"}}}}}]},\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 102.72,
+          "width": 190.76,
+          "x": 413.32,
+          "y": 92.94,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"ece43272c5e6e9c3d43f\",\"layouts\":[{\"id\":0,\"position\":{\"x\":29.347981848578936,\"y\":227.44685932648676,\"z\":6000,\"width\":876.7709577262957,\"height\":238.45235251970385,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"lineStackedColumnComboChart\",\"projections\":{\"Category\":[{\"queryRef\":\"vw_activities_heart_hourly.hour\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(vw_activities_heart_hourly.avg_hr)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"vw_activities_heart_hourly\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"hour\"},\"Name\":\"vw_activities_heart_hourly.hour\",\"NativeReferenceName\":\"hour\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"avg_hr\"}},\"Function\":1},\"Name\":\"Sum(vw_activities_heart_hourly.avg_hr)\",\"NativeReferenceName\":\"avg_hr の平均\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"avg_hr\"}},\"Function\":1}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"labels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"labelPrecision\":{\"expr\":{\"Literal\":{\"Value\":\"0L\"}}},\"labelPosition\":{\"expr\":{\"Literal\":{\"Value\":\"'Auto'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 238.45,
+          "width": 876.77,
+          "x": 29.35,
+          "y": 227.45,
+          "z": 6000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "説明ページ",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "85433732505ad6d235d4",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"442058a404fabb6113e4\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.78266061619298,\"y\":326.49629806544067,\"z\":3000,\"width\":507.47551946501073,\"height\":33.0164795796513,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"🔚 まとめ\"}]}]}}]}}}",
+          "filters": "[]",
+          "height": 33.02,
+          "width": 507.48,
+          "x": 9.78,
+          "y": 326.50,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"7e38260c48733927c574\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.78266061619298,\"y\":0,\"z\":0,\"width\":507.47551946501073,\"height\":123.50609027943635,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"🎯 異常スコアとは？\"}]},{\"textRuns\":[{\"value\":\"\"}]},{\"textRuns\":[{\"value\":\"睡眠の急激な悪化（例：deep sleep 半減、awakening増加）\"}],\"listType\":\"bullet\"},{\"textRuns\":[{\"value\":\"深夜の高心拍化\"}],\"listType\":\"bullet\"},{\"textRuns\":[{\"value\":\"15分単位で異常値が連続\"}],\"listType\":\"bullet\"},{\"textRuns\":[{\"value\":\"HRV（心拍変動）や皮膚温などの逸脱（将来的対応）\"}],\"listType\":\"bullet\"},{\"textRuns\":[{\"value\":\"\"}]}]}}]}}}",
+          "filters": "[]",
+          "height": 123.51,
+          "width": 507.48,
+          "x": 9.78,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"8394aa44b9ace75b136f\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.78266061619298,\"y\":149.1855743969429,\"z\":1000,\"width\":507.47551946501073,\"height\":31.79364700262718,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"🧠 体調・モチベ低下との関連\"}]}]}}]}}}",
+          "filters": "[]",
+          "height": 31.79,
+          "width": 507.48,
+          "x": 9.78,
+          "y": 149.19,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"86bf5b3902d3b21f13b6\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.78266061619298,\"y\":359.51277764509194,\"z\":4000,\"width\":507.47551946501073,\"height\":149.1855743969429,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"t_DashboardSummary.ページ\"},{\"queryRef\":\"t_DashboardSummary.モチベ・体調低下との関係\"},{\"queryRef\":\"t_DashboardSummary.感覚との差別化\"},{\"queryRef\":\"t_DashboardSummary.病気予兆\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"t_DashboardSummary\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"ページ\"},\"Name\":\"t_DashboardSummary.ページ\",\"NativeReferenceName\":\"ページ\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"モチベ・体調低下との関係\"},\"Name\":\"t_DashboardSummary.モチベ・体調低下との関係\",\"NativeReferenceName\":\"モチベ・体調低下との関係\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"感覚との差別化\"},\"Name\":\"t_DashboardSummary.感覚との差別化\",\"NativeReferenceName\":\"感覚との差別化\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"病気予兆\"},\"Name\":\"t_DashboardSummary.病気予兆\",\"NativeReferenceName\":\"病気予兆\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 149.19,
+          "width": 507.48,
+          "x": 9.78,
+          "y": 359.51,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"a712aac0e0477c6d06df\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.78266061619298,\"y\":180.9792213995701,\"z\":2000,\"width\":629.758777167423,\"height\":150.40840697396703,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"t_MotivationHealthSignals.データ変化の傾向\"},{\"queryRef\":\"t_MotivationHealthSignals.意味\"},{\"queryRef\":\"t_MotivationHealthSignals.状態\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"t_MotivationHealthSignals\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"データ変化の傾向\"},\"Name\":\"t_MotivationHealthSignals.データ変化の傾向\",\"NativeReferenceName\":\"データ変化の傾向\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"意味\"},\"Name\":\"t_MotivationHealthSignals.意味\",\"NativeReferenceName\":\"意味\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"状態\"},\"Name\":\"t_MotivationHealthSignals.状態\",\"NativeReferenceName\":\"状態\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 150.41,
+          "width": 629.76,
+          "x": 9.78,
+          "y": 180.98,
+          "z": 2000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Sleep Overview",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "913388532edd9583a59a",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"0bf8e76e65f1900d3625\",\"layouts\":[{\"id\":0,\"position\":{\"x\":418.2087413422498,\"y\":41.57630761882016,\"z\":1000,\"width\":191.9847145927872,\"height\":106.38643420109864,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.m_AvgTotalMinutesAsleep\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Sleep\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgTotalHoursAsleep\"},\"Name\":\"_Measures.m_AvgTotalMinutesAsleep\",\"NativeReferenceName\":\"m_AvgTotalHoursAsleep\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgTotalHoursAsleep\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 106.39,
+          "width": 191.98,
+          "x": 418.21,
+          "y": 41.58,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"1478d0e6d24ef527db55\",\"layouts\":[{\"id\":0,\"position\":{\"x\":34.239312156675425,\"y\":397.42058753283976,\"z\":4000,\"width\":605.3021256269406,\"height\":322.8278003343683,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"lineStackedColumnComboChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Date.Year\",\"active\":true},{\"queryRef\":\"Date.Date.バリエーション.日付の階層.月\",\"active\":true}],\"Series\":[{\"queryRef\":\"vw_sleep_log_with_hr_for内訳.属性\"}],\"Y\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr_for内訳.値_時間)\"}],\"Y2\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr_for内訳.total_hours_in_bed)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"vw_sleep_log_with_hr_for内訳\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Year\"},\"Name\":\"Date.Year\",\"NativeReferenceName\":\"Year\"},{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Name\":\"バリエーション\",\"Property\":\"Date\"}},\"Hierarchy\":\"日付の階層\"}},\"Level\":\"月\"},\"Name\":\"Date.Date.バリエーション.日付の階層.月\",\"NativeReferenceName\":\"Date 月\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"属性\"},\"Name\":\"vw_sleep_log_with_hr_for内訳.属性\",\"NativeReferenceName\":\"属性\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"値_時間\"}},\"Function\":1},\"Name\":\"Sum(vw_sleep_log_with_hr_for内訳.値_時間)\",\"NativeReferenceName\":\"値_時間 の平均\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_hours_in_bed\"}},\"Function\":1},\"Name\":\"Sum(vw_sleep_log_with_hr_for内訳.total_hours_in_bed)\",\"NativeReferenceName\":\"total_hours_in_bed の平均\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"labels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableValueDataLabel\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"enableTitleDataLabel\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}},\"enableDetailDataLabel\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"valueAxis\":[{\"properties\":{\"end\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}},\"secEnd\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}},\"secStart\":{\"expr\":{\"Literal\":{\"Value\":\"0D\"}}}}}],\"lineStyles\":[{\"properties\":{\"showMarker\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"dataPoint\":[{\"properties\":{\"fill\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":7,\"Percent\":0}}}}}},\"selector\":{\"metadata\":\"Sum(vw_sleep_log_with_hr_for内訳.total_hours_in_bed)\"}}]}}}",
+          "filters": "[]",
+          "height": 322.83,
+          "width": 605.30,
+          "x": 34.24,
+          "y": 397.42,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"4945e2f233c4c7c40055\",\"layouts\":[{\"id\":0,\"position\":{\"x\":34.239312156675425,\"y\":147.9627418199188,\"z\":3000,\"width\":1233.8380702173395,\"height\":249.45784571292094,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"areaChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Date.Date\",\"active\":true}],\"Y\":[{\"queryRef\":\"_Measures.m_MA7_SleepEfficiency\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0},{\"Name\":\"_\",\"Entity\":\"_Measures_Sleep\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"},\"Name\":\"Date.Date\",\"NativeReferenceName\":\"Date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_MA7_SleepEfficiency\"},\"Name\":\"_Measures.m_MA7_SleepEfficiency\",\"NativeReferenceName\":\"m_MA7_SleepEfficiency\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 249.46,
+          "width": 1233.84,
+          "x": 34.24,
+          "y": 147.96,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"6cab96a3769d415b9325\",\"layouts\":[{\"id\":0,\"position\":{\"x\":34.239312156675425,\"y\":41.57630761882016,\"z\":0,\"width\":191.9847145927872,\"height\":106.38643420109864,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.m_AvgSleepEfficiency\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Sleep\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgSleepEfficiency\"},\"Name\":\"_Measures.m_AvgSleepEfficiency\",\"NativeReferenceName\":\"m_AvgSleepEfficiency\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgSleepEfficiency\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 106.39,
+          "width": 191.98,
+          "x": 34.24,
+          "y": 41.58,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"7a73ea699f77b365a46c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":610.193455935037,\"y\":41.57630761882016,\"z\":6000,\"width\":191.9847145927872,\"height\":106.38643420109864,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(sleep_log.total_hours_in_bed)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"s\",\"Entity\":\"sleep_log\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"s\"}},\"Property\":\"total_hours_in_bed\"}},\"Function\":1},\"Name\":\"Sum(sleep_log.total_hours_in_bed)\",\"NativeReferenceName\":\"total_hours_in_bed の平均\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"s\"}},\"Property\":\"total_hours_in_bed\"}},\"Function\":1}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 106.39,
+          "width": 191.98,
+          "x": 610.19,
+          "y": 41.58,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"b63dd0e595a0640f70bc\",\"layouts\":[{\"id\":0,\"position\":{\"x\":226.22402674946264,\"y\":41.57630761882016,\"z\":2000,\"width\":191.9847145927872,\"height\":106.38643420109864,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"_Measures.m_AvgHRinSleep\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"_\",\"Entity\":\"_Measures_Sleep\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgHRinSleep\"},\"Name\":\"_Measures.m_AvgHRinSleep\",\"NativeReferenceName\":\"m_AvgHRinSleep\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"_\"}},\"Property\":\"m_AvgHRinSleep\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"visualHeader\":[{\"properties\":{\"background\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 106.39,
+          "width": 191.98,
+          "x": 226.22,
+          "y": 41.58,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"bf0637e24b2cf7018fb6\",\"layouts\":[{\"id\":0,\"position\":{\"x\":639.541437783616,\"y\":397.42058753283976,\"z\":5000,\"width\":628.5359445903989,\"height\":322.8278003343683,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"lineStackedColumnComboChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Date.Date.バリエーション.日付の階層.月\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr.total_nap_minutes)\"}],\"Y2\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr.nap_count)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"vw_sleep_log_with_hr\",\"Type\":0}],\"Select\":[{\"HierarchyLevel\":{\"Expression\":{\"Hierarchy\":{\"Expression\":{\"PropertyVariationSource\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Name\":\"バリエーション\",\"Property\":\"Date\"}},\"Hierarchy\":\"日付の階層\"}},\"Level\":\"月\"},\"Name\":\"Date.Date.バリエーション.日付の階層.月\",\"NativeReferenceName\":\"Date 月\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_nap_minutes\"}},\"Function\":0},\"Name\":\"Sum(vw_sleep_log_with_hr.total_nap_minutes)\",\"NativeReferenceName\":\"total_nap_minutes の合計\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"nap_count\"}},\"Function\":0},\"Name\":\"Sum(vw_sleep_log_with_hr.nap_count)\",\"NativeReferenceName\":\"nap_count の合計\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"seriesLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"labels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 322.83,
+          "width": 628.54,
+          "x": 639.54,
+          "y": 397.42,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"da6c1b428605a775bee5\",\"layouts\":[{\"id\":0,\"position\":{\"x\":34.239312156675425,\"y\":0,\"z\":8000,\"width\":767.9388583711489,\"height\":41.57630761882016,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"📌 目的：睡眠効率・深さ・時間・ナップ状況の全体像を把握し、日々の質を定点観測\",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"11pt\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 41.58,
+          "width": 767.94,
+          "x": 34.24,
+          "y": 0.00,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"febd662b369aa3632bd2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":999.7326937291638,\"y\":0,\"z\":7000,\"width\":268.1606854625816,\"height\":124.81211627521081,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Date.Date\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"},\"Name\":\"Date.Date\",\"NativeReferenceName\":\"Date\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}}}]},\"syncGroup\":{\"groupName\":\"Date\",\"fieldChanges\":true,\"filterChanges\":true},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"data\":[{\"properties\":{\"startDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}},\"endDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-08-31T00:00:00'\"}}},\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Where\":[{\"Condition\":{\"And\":{\"Left\":{\"Comparison\":{\"ComparisonKind\":2,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}}},\"Right\":{\"Comparison\":{\"ComparisonKind\":3,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-09-01T00:00:00'\"}}}}}}}]}}}}],\"header\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'日付フィルター'\"}}},\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}],\"date\":[{\"properties\":{\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 124.81,
+          "width": 268.16,
+          "x": 999.73,
+          "y": 0.00,
+          "z": 7000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Correlation Analysis",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "bbd91ef5d14749dd3466",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"0b4e68873678f63374f0\",\"layouts\":[{\"id\":0,\"position\":{\"x\":999.7326937291638,\"y\":0,\"z\":1000,\"width\":268.1606854625816,\"height\":124.81211627521081,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Date.Date\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"},\"Name\":\"Date.Date\",\"NativeReferenceName\":\"Date\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}}}]},\"syncGroup\":{\"groupName\":\"Date\",\"fieldChanges\":true,\"filterChanges\":true},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"data\":[{\"properties\":{\"startDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}},\"endDate\":{\"expr\":{\"Literal\":{\"Value\":\"datetime'2023-08-31T00:00:00'\"}}},\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Date\",\"Type\":0}],\"Where\":[{\"Condition\":{\"And\":{\"Left\":{\"Comparison\":{\"ComparisonKind\":2,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-06-01T00:00:00'\"}}}},\"Right\":{\"Comparison\":{\"ComparisonKind\":3,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Date\"}},\"Right\":{\"Literal\":{\"Value\":\"datetime'2023-09-01T00:00:00'\"}}}}}}}]}}}}],\"header\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'日付フィルター'\"}}},\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}],\"date\":[{\"properties\":{\"textSize\":{\"expr\":{\"Literal\":{\"Value\":\"11D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 124.81,
+          "width": 268.16,
+          "x": 999.73,
+          "y": 0.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"55010b528e9d0aa6ddd7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10,\"y\":371,\"width\":989,\"height\":349,\"z\":2000,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"scatterChart\",\"projections\":{\"X\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr.sleep_efficiency)\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(sleep_log.breathing_rate)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"vw_sleep_log_with_hr\",\"Type\":0},{\"Name\":\"s\",\"Entity\":\"sleep_log\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sleep_efficiency\"}},\"Function\":0},\"Name\":\"Sum(vw_sleep_log_with_hr.sleep_efficiency)\",\"NativeReferenceName\":\"sleep_efficiency の合計\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"s\"}},\"Property\":\"breathing_rate\"}},\"Function\":0},\"Name\":\"Sum(sleep_log.breathing_rate)\",\"NativeReferenceName\":\"breathing_rate の合計\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 349.00,
+          "width": 989.00,
+          "x": 10.00,
+          "y": 371.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"e86bcdff98b72a4a0ee1\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10.051071269726853,\"y\":0,\"z\":0,\"width\":988.7741361593792,\"height\":360.5821818014508,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"scatterChart\",\"projections\":{\"X\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr.avg_hr_sleep)\",\"active\":true}],\"Size\":[{\"queryRef\":\"Sum(vw_sleep_log_with_hr.total_minutes_asleep)\"}],\"Y\":[{\"queryRef\":\"vw_sleep_log_with_hr.sleep_efficiency\"}],\"Series\":[{\"queryRef\":\"vw_sleep_log_with_hr.log_date\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"vw_sleep_log_with_hr\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"total_minutes_asleep\"}},\"Function\":0},\"Name\":\"Sum(vw_sleep_log_with_hr.total_minutes_asleep)\",\"NativeReferenceName\":\"total_minutes_asleep の合計\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"avg_hr_sleep\"}},\"Function\":0},\"Name\":\"Sum(vw_sleep_log_with_hr.avg_hr_sleep)\",\"NativeReferenceName\":\"avg_hr_sleep の合計\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"sleep_efficiency\"},\"Name\":\"vw_sleep_log_with_hr.sleep_efficiency\",\"NativeReferenceName\":\"sleep_efficiency\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"log_date\"},\"Name\":\"vw_sleep_log_with_hr.log_date\",\"NativeReferenceName\":\"log_date\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 360.58,
+          "width": 988.77,
+          "x": 10.05,
+          "y": 0.00,
+          "z": 0.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ],
+  "theme": "Temperature"
+}

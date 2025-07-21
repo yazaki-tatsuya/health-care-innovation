@@ -1,0 +1,45 @@
+table t_MotivationHealthSignals
+	lineageTag: 59c35b5d-eba1-4d4e-baf3-03f58fd6874e
+
+	column 状態
+		lineageTag: 90984880-9596-473f-9f0b-86be407008dc
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [状態]
+
+		annotation SummarizationSetBy = Automatic
+
+	column データ変化の傾向
+		lineageTag: 36517347-6bf8-45b1-8fcb-cd47c927e492
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [データ変化の傾向]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 意味
+		lineageTag: 87ebb558-07f0-4743-a4b3-5223c7d4d743
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [意味]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition t_MotivationHealthSignals = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "状態", STRING,
+				    "データ変化の傾向", STRING,
+				    "意味", STRING,
+				    {
+				        { "風邪のひき始め", "心拍↑、睡眠スコア↓", "炎症反応・回復力の低下" },
+				        { "精神的ストレス", "睡眠断続・REM減・皮膚温上昇", "自律神経バランスの崩れ" },
+				        { "モチベ低下", "睡眠時間↓、心拍↑、ナップ増", "エネルギー残量の減少を示唆" },
+				        { "過労（バーンアウト前）", "高心拍＋短睡眠＋睡眠効率低下", "早期に離脱・休職リスクが高まるパターン" }
+				    }
+				)
+
+	annotation PBI_Id = be11b191bded4bc0bb8c7d8013f0fffc
+

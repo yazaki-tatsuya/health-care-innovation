@@ -1,0 +1,103 @@
+table _Measures_Heart
+	lineageTag: 92a92454-ba8e-4948-abb2-7e609f834465
+
+	measure m_SD_HR = ```
+			CALCULATE( 
+			        // 全期間の心拍数標準偏差（変動の大きさ）
+			        STDEV.P(activities_heart[value]),
+			        ALL(activities_heart) 
+			    )
+			```
+		lineageTag: b1350289-fd32-47c3-a45f-b2a8a4fa2823
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_MeanHR = ```
+			CALCULATE(
+			        // 全期間の心拍数平均（ベースライン）
+			        AVERAGE(activities_heart[value]),
+			        ALL(activities_heart) 
+			    )
+			```
+		lineageTag: 92b6c9aa-4425-42e9-807a-4de5e3213f55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_IsOutlier = ```
+			IF(
+			        // 平均±2σの範囲外なら1（異常）、それ以外は0（通常）
+			        ABS( SELECTEDVALUE(activities_heart[value]) - [m_MeanHR] ) > 2 * [m_SD_HR], 1, 0 
+			    )
+			```
+		formatString: 0
+		lineageTag: 34fa829b-a549-4d1a-9ec4-d3cf19227ba3
+
+	measure m_AnomalyCount = ```
+			CALCULATE( 
+			        // 異常心拍（m_IsOutlier=1）の件数
+			        COUNTROWS(activities_heart), 
+			        FILTER(activities_heart, [m_IsOutlier] = 1) 
+			    )
+			```
+		formatString: 0
+		lineageTag: 2c63b83c-570c-498d-9491-b7953bb8b181
+
+	measure m_AvgHR_Hourly_5step =
+			
+			//1時間単位の最大心拍数（全体平均）
+			ROUND(AVERAGE(vw_activities_heart_hourly[avg_hr]) / 5, 0) * 5
+		lineageTag: 2a3a9054-c507-4f4b-b156-2cecf8b3bdc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_MaxHR_Hourly =
+			AVERAGE(
+			    //1時間単位の最大心拍数（全体平均）
+			    vw_activities_heart_hourly[max_hr]
+			    )
+		lineageTag: 3a8bf966-d807-4cf7-ba84-8725bfb6ba65
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_MinHR_Hourly =
+			AVERAGE(
+			    //1時間単位の最小心拍数（全体平均）
+			    vw_activities_heart_hourly[min_hr]
+			    )
+		lineageTag: 5bb38320-e2c5-446f-a660-e7a03ddb663c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_StdDevHR_Hourly =
+			AVERAGE(
+			    //心拍変動（1時間単位のばらつき平均）
+			    vw_activities_heart_hourly[stddev_hr]
+			    )
+		lineageTag: fbf4c511-9dac-412a-97d5-2cfffcdbeaa7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_MaxDailyHR =
+			MAX(
+			    //日ごとの最大心拍の最大値（異常検知用）
+			    vw_activities_heart_hourly[max_hr]
+			    )
+		formatString: 0
+		lineageTag: 8c565a8a-2e76-46a7-b8f2-de6b3f431fc9
+
+	column Placeholder
+		lineageTag: f59cbb52-8a45-4440-9747-037540e359b1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures_Heart = calculated
+		mode: import
+		source =
+				
+				DATATABLE("Placeholder", STRING, {{" "}})
+
+	annotation PBI_Id = 255b38fa659c4658897dfb8fc40a5fc0
+

@@ -1,0 +1,53 @@
+table t_DashboardSummary
+	lineageTag: c30fd229-e8a8-419f-8f0b-5fc7a2f26a37
+
+	column ページ
+		lineageTag: 33801b91-ce6b-4534-916b-2de1b80c115f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [ページ]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 感覚との差別化
+		lineageTag: 6026e65a-4b7f-4614-8ba6-8834488e8b53
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [感覚との差別化]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 病気予兆
+		lineageTag: 3b85a14b-2a86-46bc-b9dd-bce6af4597bf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [病気予兆]
+
+		annotation SummarizationSetBy = Automatic
+
+	column モチベ・体調低下との関係
+		lineageTag: d196875c-7886-4a4b-9e4e-f6353c750ccc
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [モチベ・体調低下との関係]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition t_DashboardSummary = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "ページ", STRING,
+				    "感覚との差別化", STRING,
+				    "病気予兆", STRING,
+				    "モチベ・体調低下との関係", STRING,
+				    {
+				        { "睡眠", "質・ステージ・継続性などの客観視", "○（慢性疲労の兆候）", "○" },
+				        { "心拍", "夜間変動・傾向など感覚で気づけない状態の可視化", "◎（自律神経・心血管リスク）", "◎" },
+				        { "異常値", "感覚・日報前に逸脱兆候を先取り", "◎（兆候の蓄積）", "◎（先回りで気づける）" }
+				    }
+				)
+
+	annotation PBI_Id = dbb380e45d2a484fbcaf79944f55ddfa
+

@@ -1,0 +1,70 @@
+relationship c5ad6b61-649b-419e-a5e0-4d250cffdcfc
+	fromColumn: activities_heart.timespan
+	toColumn: activities_heart_15min.timespan
+
+relationship 63d220ba-f256-46f7-855f-fbb5ab8baeab
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sleep_log.start_time
+	toColumn: LocalDateTable_196c2278-ce6c-4d4b-913f-1baf011f41e3.Date
+
+relationship b23cadc1-bd33-4660-b47e-08b2b4c18d63
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sleep_log.end_time
+	toColumn: LocalDateTable_75c87065-9b47-4647-8027-451fd3457f2b.Date
+
+relationship a6e04a4f-b330-4b00-b258-22581a60b494
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.Date
+	toColumn: LocalDateTable_e9bc4512-1f77-4da4-97be-fae3242372b2.Date
+
+relationship 514de110-c708-6317-968f-01bf3020ca87
+	isActive: false
+	fromColumn: sleep_log.log_date
+	toColumn: Date.Date
+
+relationship 1073b237-25a4-8268-ceba-60254e15397a
+	fromColumn: activities_heart.date
+	toColumn: Date.Date
+
+relationship 10e1da35-7734-4171-b757-e94afc3bab6c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_sleep_log_with_hr.start_time
+	toColumn: LocalDateTable_d58ae285-93ca-4985-bb37-09a1dfc4d93f.Date
+
+relationship b0821065-1bec-45ba-b83f-6016ce98f723
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_sleep_log_with_hr.end_time
+	toColumn: LocalDateTable_b563ade6-4f19-45b6-a4f0-4ca216c6d3ca.Date
+
+relationship 724ebfb5-d724-2627-2068-20ba6b152dbb
+	fromColumn: vw_sleep_log_with_hr.log_date
+	toColumn: Date.Date
+
+relationship 4fd0a84c-42fc-4e15-b390-c9fbb7d89d95
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_sleep_log_with_hr_for内訳.log_date
+	toColumn: LocalDateTable_6491c810-4cfe-44bc-af7d-e6ace28f375c.Date
+
+relationship e1f3f7cf-f42a-4b5c-aae9-48741f022821
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_sleep_log_with_hr_for内訳.start_time
+	toColumn: LocalDateTable_177472c6-5650-4110-acaf-d21564351a23.Date
+
+relationship 87e09abe-f819-4273-9782-1131a6df024f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_sleep_log_with_hr_for内訳.end_time
+	toColumn: LocalDateTable_3b7812f3-9325-4bf3-9e0f-45e29aa6b4c5.Date
+
+relationship AutoDetected_b10d96b4-16ca-4a1e-a8c4-a317285c5bd8
+	fromColumn: vw_sleep_log_with_hr_for内訳.sleep_log_id
+	toColumn: vw_sleep_log_with_hr.sleep_log_id
+
+relationship 4c82177d-1415-40c1-abc5-39535d0b575d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vw_activities_heart_hourly.datetime_key
+	toColumn: LocalDateTable_e31ab992-6a9b-4ea9-a7e5-07fa621e6250.Date
+
+relationship 044d006f-03a0-a989-d08d-5df89e6460e3
+	fromColumn: vw_activities_heart_hourly.date
+	toColumn: Date.Date
+

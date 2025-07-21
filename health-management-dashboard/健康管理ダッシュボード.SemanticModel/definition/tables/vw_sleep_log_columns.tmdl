@@ -1,0 +1,56 @@
+table vw_sleep_log_columns
+	lineageTag: 430fdab7-0794-41d6-b608-02db6bca2fd6
+
+	column column_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b8560bc9-35b7-4d04-ab18-15e7fe2c256f
+		summarizeBy: sum
+		sourceColumn: column_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column column_name
+		dataType: string
+		lineageTag: e51927f2-fbfb-4b31-817c-baf4c4560c0a
+		summarizeBy: none
+		sourceColumn: column_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_type
+		dataType: string
+		lineageTag: 60b6cf1f-4b2c-4acc-94f8-873168ebf200
+		summarizeBy: none
+		sourceColumn: data_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_length
+		dataType: int64
+		formatString: 0
+		lineageTag: efe72d5b-eece-411c-b281-fe08c811d6e3
+		summarizeBy: sum
+		sourceColumn: max_length
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: e29a5239-7b8b-4c76-aced-6ad240c02fe2
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vw_sleep_log_columns = m
+		mode: import
+		source =
+				let
+				    ソース = Sql.Database("biological-database-server.database.windows.net", "biological-database"),
+				    dbo_vw_sleep_log_columns = ソース{[Schema="dbo",Item="vw_sleep_log_columns"]}[Data]
+				in
+				    dbo_vw_sleep_log_columns
+
+	annotation PBI_ResultType = Table
+

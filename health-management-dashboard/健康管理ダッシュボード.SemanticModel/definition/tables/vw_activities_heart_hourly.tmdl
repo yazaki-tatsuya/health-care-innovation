@@ -1,0 +1,105 @@
+table vw_activities_heart_hourly
+	lineageTag: 661bde98-d51a-4d4b-89cc-92f47ee90c95
+
+	column client_id
+		dataType: string
+		lineageTag: 99b874e2-af14-4b11-bb4a-b89a00396591
+		summarizeBy: none
+		sourceColumn: client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 511c8ad8-6e3e-49d2-bcca-4d72c99f8a75
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour
+		dataType: int64
+		formatString: 0
+		lineageTag: d7c26fe5-22fb-4d8b-8dd1-10b067734cce
+		summarizeBy: sum
+		sourceColumn: hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column datetime_key
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c3c1bd3b-9335-47b3-806f-8e3cbfbb6f49
+		summarizeBy: none
+		sourceColumn: datetime_key
+
+		variation バリエーション
+			isDefault
+			relationship: 4c82177d-1415-40c1-abc5-39535d0b575d
+			defaultHierarchy: LocalDateTable_e31ab992-6a9b-4ea9-a7e5-07fa621e6250.日付の階層
+
+		annotation SummarizationSetBy = Automatic
+
+	column measurement_count
+		dataType: int64
+		formatString: 0
+		lineageTag: be4e3740-915f-4729-9e1f-18b760bf26d2
+		summarizeBy: sum
+		sourceColumn: measurement_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_hr
+		dataType: int64
+		formatString: 0
+		lineageTag: efafdfb6-4bca-4ad1-8a68-8feb23d5312d
+		summarizeBy: sum
+		sourceColumn: avg_hr
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_hr
+		dataType: int64
+		formatString: 0
+		lineageTag: ad8d674a-4efe-459a-8539-01b5470ad5e1
+		summarizeBy: sum
+		sourceColumn: min_hr
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_hr
+		dataType: int64
+		formatString: 0
+		lineageTag: c7f4f33f-5e11-48a5-9ab8-4af43b79f752
+		summarizeBy: sum
+		sourceColumn: max_hr
+
+		annotation SummarizationSetBy = Automatic
+
+	column stddev_hr
+		dataType: double
+		lineageTag: d6c2468f-89f9-4c58-89b2-b9b3f89b343e
+		summarizeBy: sum
+		sourceColumn: stddev_hr
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition vw_activities_heart_hourly = m
+		mode: import
+		source =
+				let
+				    ソース = Sql.Database("biological-database-server.database.windows.net", "biological-database"),
+				    dbo_vw_activities_heart_hourly = ソース{[Schema="dbo",Item="vw_activities_heart_hourly"]}[Data],
+				    並べ替えられた行 = Table.Sort(dbo_vw_activities_heart_hourly,{{"datetime_key", Order.Ascending}})
+				in
+				    並べ替えられた行
+
+	annotation PBI_NavigationStepName = ナビゲーション
+
+	annotation PBI_ResultType = Table
+

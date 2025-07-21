@@ -1,0 +1,47 @@
+table activities_heart_15min
+	lineageTag: 41c83d23-93bb-4d48-a340-cf64e3fb0f13
+
+	column timespan
+		dataType: string
+		lineageTag: 4c79ed6a-2506-4c3a-bfd6-5b711d71f442
+		summarizeBy: none
+		sourceColumn: timespan
+
+		annotation SummarizationSetBy = Automatic
+
+	column heart_value
+		dataType: double
+		lineageTag: 35dcda7d-312e-4fd2-ad23-68302068eef0
+		summarizeBy: none
+		sourceColumn: heart_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition activities_heart_15min-77873b62-8d48-446f-ace2-03d2b6dc045f = m
+		mode: import
+		source = ```
+				let
+				    ソース = Sql.Databases("biological-database-server.database.windows.net"),
+				    #"biological-database" = ソース{[Name="biological-database"]}[Data],
+				    dbo_activities_heart = #"biological-database"{[Schema="dbo",Item="activities_heart"]}[Data],
+				    追加されたカスタム = Table.AddColumn(dbo_activities_heart, "datetime", each Date.ToText([date], "yyyy/MM/dd") &"_"& Time.ToText([time], "hh:mm:ss")),
+				    並べ替えられた行 = Table.Sort(追加されたカスタム,{{"datetime", Order.Ascending}}),
+				    追加されたカスタム1 = Table.AddColumn(並べ替えられた行, "timespan", each if Number.FromText(Time.ToText([time], "mm")) < 15 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "00" 
+				else if (Number.FromText(Time.ToText([time], "mm")) < 30) 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "15"
+				else if (Number.FromText(Time.ToText([time], "mm")) < 45) 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "30"
+				else
+				Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "45"),
+				    グループ化された行 = Table.Group(追加されたカスタム1, {"timespan"}, {{"heart_value", each List.Average([value]), type number}}),
+				    並べ替えられた行1 = Table.Sort(グループ化された行,{{"timespan", Order.Ascending}}),
+				    四捨五入 = Table.TransformColumns(並べ替えられた行1,{{"heart_value", each Number.Round(_, 0), type number}})
+				in
+				    四捨五入
+				```
+
+	annotation PBI_ResultType = Table
+

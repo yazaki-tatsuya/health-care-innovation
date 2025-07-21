@@ -1,0 +1,175 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 4.2279994417166868
+          },
+          "nodeIndex": "activities_heart_15min",
+          "nodeLineageTag": "41c83d23-93bb-4d48-a340-cf64e3fb0f13",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 294.55062777292932,
+            "y": 0
+          },
+          "nodeIndex": "activities_heart",
+          "nodeLineageTag": "0b651676-4c23-45d5-8cb5-37b7294fe2e2",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 339.64928848457396,
+            "y": 575.712590647089
+          },
+          "nodeIndex": "sleep_log",
+          "nodeLineageTag": "7d5ae2a5-74bd-48f8-a24b-313e98b070f1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 632.79058311026427,
+            "y": 796.24190146299554
+          },
+          "nodeIndex": "vw_sleep_log_columns",
+          "nodeLineageTag": "430fdab7-0794-41d6-b608-02db6bca2fd6",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 341.2647661833409,
+            "y": 328.34329657968209
+          },
+          "nodeIndex": "Date",
+          "nodeLineageTag": "c825a946-51e8-4587-ad28-4597cdb3c7c1",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 231.85096608428876
+          },
+          "nodeIndex": "vw_sleep_log_with_hr",
+          "nodeLineageTag": "2b770593-d8ad-41bf-8b4d-ebe49252f34e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 590.10626043083744
+          },
+          "nodeIndex": "vw_sleep_log_with_hr_for内訳",
+          "nodeLineageTag": "7a34254b-30c5-42e4-9ec5-3514c724823a",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 638.473747502775,
+            "y": 574.97659734648869
+          },
+          "nodeIndex": "_Measures_Sleep",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 897.05991904891982,
+            "y": 576.03359720691788
+          },
+          "nodeIndex": "_Measures_Heart",
+          "nodeLineageTag": "92a92454-ba8e-4948-abb2-7e609f834465",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 603.51518025711812,
+            "y": 0
+          },
+          "nodeIndex": "vw_activities_heart_hourly",
+          "nodeLineageTag": "661bde98-d51a-4d4b-89cc-92f47ee90c95",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1181.0599190489197,
+            "y": 398.12095073149777
+          },
+          "nodeIndex": "t_MotivationHealthSignals",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1465.0599190489197,
+            "y": 398.12095073149777
+          },
+          "nodeIndex": "t_DashboardSummary",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "すべてのテーブル",
+      "zoomValue": 70.955543900968792,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "すべてのテーブル",
+  "defaultDiagram": "すべてのテーブル"
+}

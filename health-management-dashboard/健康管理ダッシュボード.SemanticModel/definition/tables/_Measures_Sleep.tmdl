@@ -1,0 +1,88 @@
+table _Measures_Sleep
+	lineageTag: 65e0bd88-e081-4f9a-9067-1fbb8852ddaf
+
+	measure z_廃止m_AvgSleepScore =
+			AVERAGE(sleep_log[sleep_score])
+			// 睡眠スコアの平均値
+		lineageTag: e680a8b5-056d-47d9-a4c8-6197ea74ebf9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_AvgSleepEfficiency =
+			AVERAGE(vw_sleep_log_with_hr[sleep_efficiency])
+			// 睡眠効率の平均値
+		lineageTag: b3aed9a7-02f7-43eb-9c12-60284901d8d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_AvgHRinSleep = ```
+			CALCULATE( 
+			        //	メイン睡眠（is_main_sleep=1）時の平均心拍数
+			        AVERAGE(vw_sleep_log_with_hr[avg_hr_sleep]),
+			        FILTER(sleep_log, sleep_log[is_main_sleep] = TRUE()) 
+			    )
+			```
+		lineageTag: e80485e3-be33-4fb4-b618-037c666ae2d4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure z_廃止m_MA7_SleepScore =
+			
+			// 【注意】sleep_scoreがAPI経由では取得できないため、このメジャーは機能しません
+			// https://dev.fitbit.com/build/reference/web-api/sleep/get-sleep-log-by-date/
+			// 直近7日間の移動平均睡眠スコア
+			CALCULATE(
+			    AVERAGE(sleep_log[sleep_score]),
+			    DATESINPERIOD('Date'[Date],
+			    LASTDATE('Date'[Date]),-7,DAY)
+			)
+		lineageTag: 82da57a7-a234-4a92-87f5-110d5a0c8113
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_AvgDeepSleep =
+			AVERAGE(vw_sleep_log_with_hr[minutes_deep_sleep])
+			// 深い睡眠の平均時間（分）
+		lineageTag: 26564391-878b-45c7-a46b-dee23d214dd6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_AvgLightSleep =
+			AVERAGE(vw_sleep_log_with_hr[minutes_light_sleep])
+			// 浅い睡眠の平均時間（分）
+		lineageTag: 576cea7c-1441-404d-9916-67466117eeda
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_MA7_SleepEfficiency =
+			
+			// 過去7日間の睡眠効率のトレンド
+			CALCULATE(
+			    AVERAGE(vw_sleep_log_with_hr[sleep_efficiency]),
+			    DATESINPERIOD('Date'[Date], LASTDATE('Date'[Date]), -7, DAY)
+			)
+		lineageTag: 0900e5eb-96b2-4f9b-a871-0f2592eb6e42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure m_AvgTotalHoursAsleep = AVERAGE(vw_sleep_log_with_hr[total_minutes_asleep])/60
+		lineageTag: b22a33a3-6fb6-49ed-9eba-ac91ff566fdb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Placeholder
+		lineageTag: ced56e39-f63e-40a3-9175-c7c0077bd530
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures_Sleep = calculated
+		mode: import
+		source =
+				
+				DATATABLE("Placeholder", STRING, {{" "}})
+
+	annotation PBI_Id = e45575d5991040ccbf897bee4651ec68
+

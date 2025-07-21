@@ -1,0 +1,82 @@
+table activities_heart
+	lineageTag: 0b651676-4c23-45d5-8cb5-37b7294fe2e2
+
+	column client_id
+		dataType: string
+		lineageTag: 55c1ac33-3970-41af-bbf9-53fb6fa6fecd
+		summarizeBy: none
+		sourceColumn: client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c1a8d357-8eac-4f8a-a59c-8b6f5255af12
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: cd6741e3-305e-4ff0-add8-184cd8d8cdfe
+		summarizeBy: none
+		sourceColumn: time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column value
+		dataType: int64
+		formatString: 0
+		lineageTag: 90ff2945-e3f9-408c-87bd-b3afb2977d92
+		summarizeBy: sum
+		sourceColumn: value
+
+		annotation SummarizationSetBy = Automatic
+
+	column datetime
+		dataType: string
+		lineageTag: 04bd9a60-bc32-4b6e-ac94-4e20acc28ad6
+		summarizeBy: none
+		sourceColumn: datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column timespan
+		dataType: string
+		lineageTag: e3c98e4b-11a6-45c6-b61f-8e23a5bb22fa
+		summarizeBy: none
+		sourceColumn: timespan
+
+		annotation SummarizationSetBy = Automatic
+
+	partition activities_heart-f81f80c5-a634-468c-aff8-7841c316b678 = m
+		mode: import
+		source = ```
+				let
+				    ソース = Sql.Databases("biological-database-server.database.windows.net"),
+				    #"biological-database" = ソース{[Name="biological-database"]}[Data],
+				    dbo_activities_heart = #"biological-database"{[Schema="dbo",Item="activities_heart"]}[Data],
+				    追加されたカスタム = Table.AddColumn(dbo_activities_heart, "datetime", each Date.ToText([date], "yyyy/MM/dd") &"_"& Time.ToText([time], "hh:mm:ss")),
+				    並べ替えられた行 = Table.Sort(追加されたカスタム,{{"datetime", Order.Ascending}}),
+				    追加されたカスタム1 = Table.AddColumn(並べ替えられた行, "timespan", each if Number.FromText(Time.ToText([time], "mm")) < 15 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "00" 
+				else if (Number.FromText(Time.ToText([time], "mm")) < 30) 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "15"
+				else if (Number.FromText(Time.ToText([time], "mm")) < 45) 
+				then Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "30"
+				else
+				Date.ToText([date],"yyyyMMdd") & "_" & Time.ToText([time], "HH") & "45"),
+				    並べ替えられた行1 = Table.Sort(追加されたカスタム1,{{"datetime", Order.Ascending}})
+				in
+				    並べ替えられた行1
+				```
+
+	annotation PBI_ResultType = Table
+

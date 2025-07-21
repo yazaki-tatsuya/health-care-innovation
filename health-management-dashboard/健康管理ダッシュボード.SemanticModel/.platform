@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "健康管理ダッシュボード"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4bbd52fb-65b8-43ea-b0bd-9ff4fcaa8aaa"
+  }
+}
